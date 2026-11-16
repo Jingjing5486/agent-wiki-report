@@ -1,0 +1,331 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Agent Wiki调研报告：知识组织、结构化检索、Wiki构建及质量与时延评估。附原始论文、官方文档和本地审计引用。"><meta name="color-scheme" content="light"><title>Agent Wiki 调研报告｜知识组织与检索机制</title><style>
+:root{--bg:#f5f4ee;--paper:#fffefb;--ink:#1b2c36;--muted:#657079;--line:#d9ded9;--accent:#176e62;--soft:#eaf2ed;--gold:#a47836;--nav:250px}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.9}a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}a:hover{color:#093f37}button,a{touch-action:manipulation}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #d1a75c;outline-offset:4px}button{font:inherit;cursor:pointer}.sidebar{position:fixed;inset:0 auto 0 0;width:var(--nav);padding:36px 25px;border-right:1px solid var(--line);background:#eeefe8;display:flex;flex-direction:column;z-index:5;overflow:auto}.brand{font-size:21px;font-weight:750;letter-spacing:-.6px}.brand small{display:block;font-size:11px;letter-spacing:2.3px;font-weight:500;color:var(--muted);margin-top:4px}.sidebar .edition{font-size:12px;color:var(--muted);margin:23px 0 28px;padding-bottom:22px;border-bottom:1px solid var(--line)}nav a{display:flex;gap:12px;padding:10px 8px;margin:3px -8px;text-decoration:none;color:#59666b;font-size:13px;border-left:3px solid transparent}nav a span{font-size:11px;color:#8b9697;min-width:21px}nav a:hover,nav a.active{background:#e0e8df;border-left-color:var(--accent);color:#123f38}.nav-bottom{margin-top:auto;padding-top:28px;font-size:11px;color:var(--muted)}.print-button{display:block;width:100%;border:1px solid #b8c5bb;background:transparent;padding:9px 12px;color:var(--ink);border-radius:3px;margin-bottom:14px}.progress-track{height:3px;background:#dbe2d8;margin:12px 0}.progress-track div{height:100%;background:var(--accent);width:0}.main{margin-left:var(--nav);max-width:1480px;padding:56px 6.2vw 30px}.hero{border-bottom:1px solid var(--ink);padding:15px 0 45px}.eyebrow{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:14px}.hero .meta{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:36px}.hero h1{font-family:"Songti SC","STSong",Georgia,serif;font-size:clamp(42px,5vw,68px);line-height:1.15;letter-spacing:-2px;font-weight:700;margin:0 0 23px}.hero h1 span{display:block;font-family:inherit;font-size:clamp(24px,2.5vw,35px);line-height:1.5;letter-spacing:0;margin-top:15px;font-weight:400}.hero .lede{max-width:840px;font-size:17px;line-height:1.95;color:#46545b;margin:0}.hero-bottom{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}.tag{display:inline-block;font-size:11px;line-height:1.5;padding:4px 9px;border:1px solid #cbd7cc;border-radius:3px;letter-spacing:.2px}.verified{color:#1a6556;background:#e7f0e9}.design{color:#755b2c;background:#f4eddb;border-color:#e1d3b3}.pending{color:#6c647d;background:#eeebf3;border-color:#dbd6e4}.intro{padding:29px 0 10px;color:var(--muted);font-size:13px}.section{padding:45px 0;border-bottom:1px solid var(--line)}.section-heading{display:flex;gap:20px;align-items:flex-start;margin-bottom:28px}.section-number{font:italic 32px Georgia,serif;color:#9caca2;line-height:1.4;min-width:40px}.section-heading h2{font-size:26px;line-height:1.5;margin:0;font-weight:650;letter-spacing:-.6px}.section-heading p{margin:8px 0 0;color:var(--muted);font-size:14px}h3{font-size:18px;line-height:1.6;margin:32px 0 13px;font-weight:650}p{margin:15px 0}strong{font-weight:650}.citations{white-space:nowrap;display:inline;font-size:11px;vertical-align:super;line-height:0;margin-left:4px}.citations a{text-decoration:none;margin-right:3px}.callout{border-left:3px solid var(--accent);padding:21px 27px;background:var(--soft);margin:26px 0}.callout p{margin:7px 0;line-height:1.95}.callout .eyebrow{margin-bottom:10px}.callout.soft{background:#eef1eb}.note{font-size:12px;color:var(--muted);line-height:1.85}.table-wrap{overflow-x:auto;margin:17px 0 24px;border-top:2px solid #8d9f94;border-bottom:1px solid var(--line)}table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.85;background:var(--paper)}th{text-align:left;background:#e8ede6;font-weight:650;color:#29453b;padding:12px 15px;vertical-align:top}td{padding:14px 15px;border-top:1px solid #e1e5dd;vertical-align:top}td:first-child{font-weight:550;min-width:145px;width:22%;color:#254b40}tr:nth-child(even) td{background:#f8f9f4}td:last-child{min-width:180px}.equation{padding:16px 20px;background:#eeeee7;border:1px solid #dfe3d8;text-align:center;font-family:Georgia,"Songti SC",serif;font-size:17px;overflow-x:auto;margin:16px 0}.flow{display:flex;align-items:stretch;gap:10px;margin:28px 0}.flow>div{padding:17px 13px;border:1px solid #cbd6c9;flex:1;background:#f9fbf5}.flow small{color:var(--accent);font-size:10px;letter-spacing:2px}.flow strong{display:block;font-size:15px;margin:6px 0}.flow span{display:block;font-size:11px;color:var(--muted)}.flow>b{align-self:center;color:#8f9d91;font-size:18px}.route-demo{border:1px solid var(--line);background:var(--paper);margin:20px 0}.route-head{padding:20px 24px;border-bottom:1px solid var(--line)}.route-head strong{display:block;margin-top:11px}.route{list-style:none;counter-reset:route;padding:15px 25px 20px;margin:0}.route li{counter-increment:route;display:grid;grid-template-columns:28px 115px 1fr;gap:13px;padding:14px 0;border-bottom:1px solid #ecefe8}.route li:last-child{border:0}.route li:before{content:counter(route);border-radius:50%;background:#e9eee4;color:var(--accent);text-align:center;font-size:12px;width:27px;height:27px;line-height:27px;margin-top:2px}.route b{font-size:14px}.route span{font-size:13px;color:#526067}details{margin:23px 0;border:1px solid #d4dcd0;background:#fafbf6;padding:0 21px}summary{cursor:pointer;padding:16px 0;font-size:14px;font-weight:600;color:var(--accent)}details[open]{padding-bottom:13px}pre{padding:22px;background:#20332f;color:#e5eee4;font-size:12px;line-height:1.7;overflow:auto;border-radius:3px;tab-size:2}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em}.metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:23px 0}.metrics>div{padding:24px 12px;border-right:1px solid var(--line)}.metrics>div:last-child{border:0}.metrics b{font-family:Georgia,serif;font-size:35px;line-height:1.2;font-weight:400;color:var(--accent);display:block}.metrics span{font-size:12px;color:var(--muted);display:block;margin-top:9px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:35px}.two-col>div+div{border-left:1px solid var(--line);padding-left:35px}.two-col h3{margin-top:17px}.steps{padding-left:23px}.steps li{padding:8px 0 8px 7px}.closing{border-top:2px solid var(--accent);margin-top:30px;padding:27px 0 0}.closing p{font-family:"Songti SC","STSong",serif;font-size:23px;line-height:1.85;max-width:850px}.references{padding-left:26px}.references li{padding:10px 0 12px 7px;border-bottom:1px solid var(--line);scroll-margin-top:24px}.references li:target{background:#e7efdf}.references a{font-size:14px;font-weight:550;overflow-wrap:anywhere}.references p{font-size:12px;color:var(--muted);margin:4px 0}.footer{padding:28px 0;color:var(--muted);font-size:11px;display:flex;justify-content:space-between;gap:20px}.mobile-head{display:none}body.focus .sidebar{display:none}body.focus .main{margin:0 auto;max-width:1200px}#focus-button{position:fixed;right:19px;bottom:20px;background:var(--paper);color:var(--accent);border:1px solid #c2cfc1;box-shadow:0 3px 15px #243a2c12;padding:8px 14px;font-size:12px;border-radius:4px;z-index:6}.skip{position:absolute;top:-100px;left:270px;z-index:10;background:white;padding:10px}.skip:focus{top:10px}@media(min-width:1700px){.main{margin-left:calc(var(--nav) + (100vw - 1700px)/2);max-width:1370px}}@media(max-width:1100px){:root{--nav:215px}.sidebar{padding:30px 20px}.main{padding:38px 4vw}.flow{flex-wrap:wrap}.flow>div{min-width:38%}.flow>b{display:none}.section-heading h2{font-size:23px}}@media(max-width:760px){.sidebar{position:static;width:auto;padding:20px 22px;display:block;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:18px}.brand small{display:inline;margin-left:12px;font-size:9px}.sidebar .edition,.nav-bottom{display:none}nav{display:flex;overflow-x:auto;margin-top:13px;gap:12px}nav a{white-space:nowrap;font-size:12px;padding:6px 4px;margin:0;border-left:0;border-bottom:2px solid transparent}nav a.active{border-left:0;border-bottom-color:var(--accent)}nav a span{min-width:0}nav a:nth-last-child(-n+2){display:none}.main{margin:0;padding:28px 22px}.hero{padding-top:5px}.hero .meta{margin-bottom:25px;font-size:11px}.hero h1{font-size:44px}.hero h1 span{font-size:23px}.hero .lede{font-size:15px}.section{padding:32px 0}.section-heading{gap:10px}.section-heading h2{font-size:22px}.section-number{font-size:25px;min-width:30px}table{min-width:630px}.metrics{grid-template-columns:1fr 1fr}.metrics>div:nth-child(2){border-right:0}.metrics>div:nth-child(-n+2){border-bottom:1px solid var(--line)}.two-col{grid-template-columns:1fr;gap:18px}.two-col>div+div{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}.route{padding:10px 16px}.route li{grid-template-columns:24px 1fr;gap:7px 12px}.route span{grid-column:2}.callout{padding:16px 19px}.footer{flex-direction:column;gap:4px}.closing p{font-size:20px}#focus-button{bottom:12px;right:12px}.skip{left:10px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{@page{size:A4;margin:17mm 15mm}body{background:white;font-size:10pt;color:#15242b;line-height:1.65}.sidebar,#focus-button,.skip{display:none!important}.main,body.focus .main{margin:0;padding:0;max-width:none}.hero{padding:0 0 20px}.hero h1{font-size:34pt}.hero h1 span{font-size:20pt}.hero .lede{font-size:11pt}.hero .meta{margin-bottom:18px}.section{padding:22px 0}.section-heading h2{font-size:17pt}.section-heading p{font-size:10pt}h3{font-size:12pt;break-after:avoid}.section-heading{break-after:avoid}.table-wrap{overflow:visible}table{min-width:0!important;font-size:9pt}td,th{padding:7px 9px}tr{break-inside:avoid}thead{display:table-header-group}.flow{break-inside:avoid}.flow>div{min-width:0}.metrics{break-inside:avoid}.callout{break-inside:avoid}.references li{break-inside:avoid}.two-col{display:block}.two-col>div+div{padding:15px 0;border:0}.note{font-size:8.5pt}.route li{break-inside:avoid}.footer{font-size:8pt}a{color:#205b4d}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:8pt;background:#f0f2ed;color:#1b342c}details{break-inside:auto}.citations{font-size:8pt}.closing p{font-size:15pt}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.matrix table{min-width:900px;table-layout:fixed}.matrix td:first-child{width:16%;min-width:0}.matrix td:last-child{min-width:0}.matrix td,.matrix th{overflow-wrap:anywhere}@media print{.matrix table{min-width:0;font-size:8pt}.matrix td,.matrix th{padding:6px}}.viewer-links{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}.viewer-links a{border:1px solid #bccdbd;background:#edf3e9;padding:9px 15px;text-decoration:none;border-radius:3px;font-size:13px}.viewer-embed iframe{width:100%;height:660px;border:1px solid #d5ddd0;background:white}@media print{.viewer-embed{display:none}.viewer-links a{font-size:9pt}}.local-reference{color:#59635a;text-decoration:underline dotted;text-underline-offset:3px}.local-reference:after{font-size:.78em;color:#707970}</style></head><body><a class="skip" href="#content">跳到正文</a><aside class="sidebar" aria-label="报告目录"><div class="brand">Agent Wiki<small>RESEARCH REPORT</small></div><div class="edition">研究初稿 · v0.1<br>2026年11月16日</div><nav><a href="#problem"><span>01</span>问题与目标</a><a href="#landscape"><span>02</span>方案空间</a><a href="#wiki"><span>03</span>Wiki 文件结构</a><a href="#construction"><span>04</span>Wiki 生成方法</a><a href="#evaluation"><span>05</span>检索方法</a><a href="#conclusion"><span>06</span>总结与判断</a><a href="#audit"><span>A</span>材料修订</a><a href="#appendix"><span>附</span>Token 附录</a><a href="#references"><span>R</span>参考资料</a></nav><div class="nav-bottom"><button id="print-button" class="print-button" type="button">打印 / 导出 PDF</button><div>阅读进度</div><div class="progress-track" aria-hidden="true"><div id="progress"></div></div><div>知识组织 → 检索机制 → 实验验证</div></div></aside><main class="main" id="content"><header class="hero"><div class="meta"><span>研究初稿 / 可继续补充</span><span>资料核验 · 2026.11.16</span><span>以原始笔记、论文与代码审计为依据</span></div><span class="eyebrow">Knowledge organization & retrieval</span><h1>Agent Wiki<span>通过知识组织改进检索质量与效率</span></h1><p class="lede">以缩短检索时延、提高检索准确率为目标，探索不同的知识组织方式，以及利用这些组织结构进行检索的方法。重点比较文档树、摘要层级、语义图与类型化 Wiki 如何组织信息、建立关联并支持检索。</p><div class="hero-bottom"><span class="tag verified">已有依据：论文 / 官方资料 / 本地审计</span><span class="tag design">设计建议：待实现或对照验证</span><span class="tag pending">效果边界：不预设性能提升</span></div></header><div class="intro">阅读主线：问题与目标 → 方案空间 → Wiki 文件结构 → 生成方法 → 检索方法 → 总结与判断。正文数字引用可跳至文末资料；技术细节可展开阅读。</div><section id="problem" class="section"><div class="section-heading"><span class="section-number">01</span><div><h2>问题与调研目标</h2><p>从扁平化 chunk 检索，转向对知识组织方式与检索方法的探索。</p></div></div>
+<p>传统的扁平化 RAG 将文档切分为多个 chunk，在全量 chunk 构成的检索库中，将 query 与 chunk 进行匹配，选出相关片段供模型回答问题。这种方式主要依赖问题与独立片段之间的相关性，存在两个值得改进的问题：<span class="citations"><a href="#ref-23" aria-label="参考文献23">[23]</a><a href="#ref-8" aria-label="参考文献8">[8]</a></span></p>
+<ol class="steps"><li><strong>检索范围大，可能带来计算开销与冗余。</strong>每次查询都面向全量 chunk 查找，随着语料规模增长，候选检索和后续处理的开销可能增加；内容相近或重复的片段也可能被反复召回、读取。</li><li><strong>没有充分利用片段之间的语义关系与文档层级。</strong>chunk 被作为相对独立的单元检索，片段之间的主题联系、跨文档关联，以及文章的章、节、小节结构没有充分参与检索过程，难以据此缩小查找范围或找到关联证据。<span class="citations"><a href="#ref-23" aria-label="参考文献23">[23]</a><a href="#ref-8" aria-label="参考文献8">[8]</a></span></li></ol>
+<div class="callout"><strong>最终目标：缩短检索时延，提高检索准确率。</strong><p>为此，本报告从知识组织方式入手，重点调研两个相互关联的问题：<strong>知识可以如何组织，以及检索方法如何利用这些组织结构</strong>。围绕文档树、摘要层级、语义图和类型化 Wiki 等方式，比较它们如何组织信息、建立关联，并支持范围选择、逐层定位和关联检索。</p></div>
+</section><section id="landscape" class="section"><div class="section-heading"><span class="section-number">02</span><div><h2>方案空间：知识结构 × 检索方法</h2><p>知识结构决定信息如何组织，检索方法决定如何利用这些结构查找信息。</p></div></div><h3>2.1 知识结构</h3><div class="table-wrap "><table><thead><tr><th scope="col">结构</th><th scope="col">节点</th><th scope="col">构建方法与结构特点</th></tr></thead><tbody><tr><td>A0 · 扁平片段池</td><td>chunk</td><td>将文档切分为片段，分别建立检索索引。</td></tr><tr><td>A1 · 文档结构树</td><td>文档、章、节、小节</td><td>提取或重建文档目录，以父子关系连接章节，并记录原文范围。<span class="citations"><a href="#ref-5" aria-label="参考文献5">[5]</a></span></td></tr><tr><td>A2 · 派生摘要层级</td><td>原始 chunk、各层摘要</td><td>对片段聚类并递归生成摘要，形成自底向上的语义层级；软聚类允许多重归属。<span class="citations"><a href="#ref-4" aria-label="参考文献4">[4]</a></span></td></tr><tr><td>A3 · 语义图</td><td>实体、概念、原文片段等</td><td>抽取关系并连接节点；部分方法进一步形成社区及社区摘要。<span class="citations"><a href="#ref-6" aria-label="参考文献6">[6]</a><a href="#ref-7" aria-label="参考文献7">[7]</a></span></td></tr><tr><td>A4 · 类型化 Wiki</td><td>概览页、章节页、主题页、来源页</td><td>按页面类型组织内容，通过目录、主题链接与来源引用连接文档内及跨文档知识。<span class="citations"><a href="#ref-8" aria-label="参考文献8">[8]</a><a href="#ref-23" aria-label="参考文献23">[23]</a></span></td></tr></tbody></table></div><h3>2.2 检索方法</h3><div class="table-wrap "><table><thead><tr><th scope="col">方法</th><th scope="col">检索过程</th><th scope="col">结构利用方式</th></tr></thead><tbody><tr><td>B1 · 平铺打分</td><td>query → 词法 / 向量 / 混合检索 → 相关节点</td><td>将节点放入共同候选集打分；候选可以包含不同层级的内容。</td></tr><tr><td>B2 · 层级导航</td><td>选择上层节点 → 进入子节点 → 逐层定位</td><td>利用父子关系逐步缩小候选范围。</td></tr><tr><td>B3 · 图检索与扩展</td><td>定位种子 → 关联扩展、图传播或社区检索</td><td>利用语义关系连接证据；不同方法可采用邻接扩展、PPR或社区摘要等机制。</td></tr><tr><td>B4 · Agent 工具循环</td><td>搜索 → 读取 → 根据证据继续搜索、跳转或回退</td><td>根据中间结果动态选择路径，可组合调用B1、B2、B3。</td></tr></tbody></table></div><h3>2.3 知识结构 × 检索方法</h3><p>同一种结构可以支持多种检索方法，同一系统也可以组合多种方法。下表列出代表实现；“—”表示未列出代表实例。</p><div class="table-wrap matrix"><table><thead><tr><th scope="col">知识结构</th><th scope="col">B1 · 平铺打分</th><th scope="col">B2 · 层级导航</th><th scope="col">B3 · 图检索与扩展</th><th scope="col">B4 · Agent 工具循环</th></tr></thead><tbody><tr><td>A0 · 扁平片段池</td><td>经典 chunk 检索：对片段进行相关性排序</td><td>—</td><td>—</td><td>—</td></tr><tr><td>A1 · 文档结构树</td><td>—</td><td><strong>PageIndex</strong><br>结合文档树与模型推理定位相关内容。<span class="citations"><a href="#ref-5" aria-label="参考文献5">[5]</a></span></td><td>—</td><td>—</td></tr><tr><td>A2 · 派生摘要层级</td><td><strong>RAPTOR · collapsed tree</strong><br>将所有层级节点放入共同候选集检索。<span class="citations"><a href="#ref-4" aria-label="参考文献4">[4]</a></span></td><td><strong>RAPTOR · tree traversal</strong><br>逐层选择相关节点，再进入其子节点。<span class="citations"><a href="#ref-4" aria-label="参考文献4">[4]</a></span></td><td>—</td><td>—</td></tr><tr><td>A3 · 语义图</td><td>—</td><td>—</td><td><strong>GraphRAG</strong>：local结合图与原文，global检索社区报告。<br><strong>HippoRAG</strong>：PPR关联检索。<span class="citations"><a href="#ref-6" aria-label="参考文献6">[6]</a><a href="#ref-7" aria-label="参考文献7">[7]</a></span></td><td>—</td></tr><tr><td>A4 · 类型化 Wiki</td><td><strong>SearchWiki · search_wiki</strong><br>多查询BM25 + RRF。<br><strong>llm-wiki-compiler</strong>：片段/页面召回。<span class="citations"><a href="#ref-8" aria-label="参考文献8">[8]</a><a href="#ref-10" aria-label="参考文献10">[10]</a></span></td><td><strong>SearchWiki</strong><br>通过目录和概览，用list_files、read_file、read_page逐步定位。<span class="citations"><a href="#ref-8" aria-label="参考文献8">[8]</a></span></td><td><strong>llm-wiki-compiler · context</strong><br>沿页面链接扩展邻居。<span class="citations"><a href="#ref-10" aria-label="参考文献10">[10]</a></span></td><td><strong>SearchWiki / LLM-Wiki</strong><br>多轮搜索、读取与链接跳转，根据证据调整路径。<span class="citations"><a href="#ref-8" aria-label="参考文献8">[8]</a><a href="#ref-23" aria-label="参考文献23">[23]</a></span></td></tr></tbody></table></div><details><summary>技术补充：RAPTOR 的两种查询方式</summary><p><strong>Tree traversal：</strong>先在顶层选择相关节点，再只在已选节点的孩子中继续选取，逐层下降，组合选中节点文本。<strong>Collapsed tree：</strong>将各层节点放到共同候选集合中检索，允许同时选择不同抽象粒度的内容。<span class="citations"><a href="#ref-4" aria-label="参考文献 4">[4]</a></span></p><p>论文 Figure 3 在 QASPER 的20篇文档子集上比较两种方案，并据此选择 collapsed tree 用于主实验。这个结果支持“多粒度表示可能有价值”，却不是“逐层剪枝已证明带来加速”的证据。软聚类还允许多重归属，因此其层级不应机械等同于文档目录树。</p></details></section><section id="wiki" class="section"><div class="section-heading"><span class="section-number">03</span><div><h2>Agent Wiki：文件组织与数据 Schema</h2><p>概览页提供入口，概念页组织知识，源页保留依据；分类方式随语料确定，页面契约保持明确。</p></div></div>
+<p>Karpathy 的 <strong>LLM Wiki</strong> 提出：在原始资料与用户之间，建立一套由 LLM 持续整理的 Markdown 知识库，将摘要、主题综合和交叉引用保存为可复用的页面。其架构区分原始资料、生成的 Wiki，以及规定文件格式和维护约定的 schema。这里介绍的是这一组织思路，以及受其启发的 LLM-Wiki 论文和 llm-wiki-compiler 实现。<span class="citations"><a href="#ref-24" aria-label="参考文献24">[24]</a><a href="#ref-23" aria-label="参考文献23">[23]</a><a href="#ref-9" aria-label="参考文献9">[9]</a></span></p>
+<h3>3.1 基本组织：概览页 / 概念页 / 源页</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">组成</th><th scope="col">主要内容</th><th scope="col">作用</th></tr></thead><tbody><tr><td>概览页</td><td>知识范围说明、分类目录、页面链接及简短描述；以index.md作为主要入口</td><td>先了解知识库包含什么，再找到相关页面。</td></tr><tr><td>概念页 / 主题页</td><td>围绕实体、事件、概念或主题整理的内容，附相关页链接与引用</td><td>跨来源综合知识；一个页面可以关联多份资料，一份资料也可贡献多个页面。</td></tr><tr><td>源页 / 来源档案</td><td>原始文章、PDF、解析后的Markdown或页级JSON，以及可选来源摘要</td><td>保留可回查依据；来源摘要与完整原文应能区分。</td></tr></tbody></table></div>
+<p>这三类是内容职责，目录名不必统一。概念页可以按语料分成 <code>entities/</code>、<code>events/</code> 等目录，也可以不设二级分类，直接放在 <code>topics/</code> 或 <code>concepts/</code> 下。页面 schema 需提前由人定义；具体页面及其分类可在编译时结合语料形成，但必须遵循预先约定的字段、类型与分类扩展规则。以下是本报告的通用组织示意。</p>
+<pre><code>项目/
+├── schema.md                 # 页面字段、类型、链接、引用与目录约定
+├── wiki/
+│   ├── index.md              # 知识范围 + 导航目录
+│   ├── concepts/             # 多个主题页；可按需要改为分类目录
+│   │   ├── 主题A.md
+│   │   └── 主题B.md
+│   └── log.md                # 可选：构建与维护记录
+└── sources/                  # 完整来源及定位信息
+    ├── 原始资料.pdf
+    └── 原始资料解析.md</code></pre>
+<p class="note">目录树为通用示意，不是某篇论文或某个项目的固定要求。<code>schema.md</code>也可由AGENTS.md、JSON配置或程序类型定义承担。Karpathy明确将具体目录和格式留给领域与实现决定。<span class="citations"><a href="#ref-24" aria-label="参考文献24">[24]</a></span></p>
+<h3>3.2 index.md 应包含什么？</h3>
+<p><code>index.md</code> 是内容导航：通常包括<strong>知识库的范围概述、分类及其含义、页面链接和一行摘要</strong>，也可附更新时间、别名或来源数。页面较多时，根索引先列分类，各目录再用 <code>_index.md</code> 或 <code>index.md</code> 列出页面；不分类时，根索引直接列出所有主题。<span class="citations"><a href="#ref-24" aria-label="参考文献24">[24]</a><a href="#ref-23" aria-label="参考文献23">[23]</a></span></p>
+<pre><code># 知识库概览
+覆盖范围：本批资料涉及的公司业务、财务表现与相关主题。
+
+## 主题目录
+- [[concepts/腾讯营销服务业务]] — 汇集公告、业绩演示与研究报告中的相关内容
+- [[concepts/腾讯股份回购]] — 整理回购主题及其来源
+
+## 来源入口
+- sources/ — 原始资料与解析文本</code></pre>
+<p class="note">上例为按本地页面标题改写的说明示例。llm-wiki-compiler的默认index.md实际以Concepts列表为主，条目包含链接、标题和summary，末尾记录页数及生成时间；启用其他页面类型后可追加相应分组。<span class="citations"><a href="#ref-25" aria-label="参考文献25">[25]</a></span></p>
+<h3>3.3 例一：LLM-Wiki 按语料形成分类目录</h3>
+<p>LLM-Wiki论文附录E展示了2WikiMHQA语料的六类目录：<strong>concepts、geography、history、media、organizations、people</strong>。它们是主题分类，并非六种统一实体类型。根索引概述范围，分类索引列出页面；人物页再连接相关人物及来源。<span class="citations"><a href="#ref-23" aria-label="参考文献23">[23]</a></span></p>
+<pre><code>wiki/
+├── index.md
+├── concepts/          # 抽象概念
+├── geography/         # 地理
+├── history/           # 历史
+├── media/             # 作品
+├── organizations/     # 组织
+├── people/
+│   ├── _index.md
+│   ├── John-V-Prince-of-Anhalt-Zerbst.md
+│   └── Ernest-I-Prince-of-Anhalt-Dessau.md
+└── sources/
+    ├── digests/       # 段落级摘要
+    └── articles/      # 完整原文</code></pre>
+<p class="note">依据论文附录E缩写；其他知识目录同样有分类索引。六个目录名及两个页面名来自论文示例。</p>
+<p>论文的知识页格式包括 <code>type / created / updated / aliases / tags</code>、摘要、关键事实、关联页面与来源。其John V示例通过父子关系链接Ernest I页面，展示了“读到一个实体后继续寻找关联信息”的组织方式。<strong>可变的是类别与目录，明确的是每类页面应具备的字段、链接和出处。</strong><span class="citations"><a href="#ref-23" aria-label="参考文献23">[23]</a></span></p>
+<p>因此，另一批以人物、机构和活动为中心的资料，可以采用 <code>entities/ + events/</code>；这属于按数据设计的方案，而不是上述2WikiMHQA示例的原样目录。</p>
+<h3>3.4 例二：llm-wiki-compiler 的主题页、查询页与持续更新</h3>
+<p>本地编译器采用默认的 <strong>concepts + queries</strong> 结构：<code>wiki/concepts/</code> 保存从来源整理的主题页，<code>wiki/queries/</code> 保存选择回写的问答结果。主题页不必预先分成行业或实体目录。不同来源中归到同一概念标识的内容进入同一页面，页面之间通过 <code>[[wikilinks]]</code> 连接。实现按概念标题生成的slug归并，并非自动保证所有同义主题都能合并。<span class="citations"><a href="#ref-9" aria-label="参考文献9">[9]</a><a href="#ref-10" aria-label="参考文献10">[10]</a></span></p>
+<pre><code>项目/
+├── sources/                    # 输入Markdown来源
+├── wiki/
+│   ├── index.md                # Concepts + Saved Queries，含链接与摘要
+│   ├── concepts/               # 从来源整理、融合的主题页
+│   │   ├── 腾讯营销服务业务.md
+│   │   ├── 腾讯股份回购.md
+│   │   └── 腾讯ai战略投入与商业化.md
+│   └── queries/                # 通过query --save保存的问答页
+│       └── 问题对应的slug.md     # 文件名示意
+├── log.md                      # 查询等活动记录
+└── .llmwiki/
+    ├── state.json              # 来源及编译状态
+    ├── schema.json             # 可选：页面类型与链接要求配置
+    └── candidates/             # 启用review时的待审核候选</code></pre>
+<p><strong>具体例子：腾讯营销服务业务。</strong>本地这一主题页的 <code>sources</code> 列出三份来源：腾讯2025年第二季度及中期业绩公告、招银国际腾讯业绩点评、腾讯2024年第四季度及全年业绩演示。正文按分部定位、收入增长、盈利能力、AI应用等小节组织，而不是为每份报告各写一张同名页面。<span class="citations"><a href="#ref-26" aria-label="参考文献26">[26]</a></span></p>
+<div class="flow"><div><small>来源A</small><strong>公司公告</strong><span>腾讯2025Q2及中期业绩</span></div><div><small>来源B</small><strong>研究报告</strong><span>招银国际腾讯业绩点评</span></div><div><small>来源C</small><strong>业绩演示</strong><span>腾讯2024Q4及全年业绩</span></div><b aria-hidden="true">→</b><div><small>主题页</small><strong>腾讯营销服务业务</strong><span>正文分节 · 逐段引用 · 关联链接</span></div></div>
+<p>该页frontmatter记录 <code>title、summary、sources、kind、createdAt、updatedAt、tags、aliases</code>，以及生成相关字段；本例的 <code>kind=concept</code>、<code>provenanceState=merged</code>。正文引用采用 <code>^[来源文件.md:起行-止行]</code>。这里展示的是文件组织与溯源方式，不将模型生成页面中的全部财务内容视为已核验事实。<span class="citations"><a href="#ref-26" aria-label="参考文献26">[26]</a><a href="#ref-27" aria-label="参考文献27">[27]</a></span></p>
+<h4>查询页：把本次回答积累为后续上下文</h4>
+<p>除了从资料构建主题页，项目也支持将查询中的综合结果保存下来：使用 <code>query --save</code>，通过当前保存检查后，将答案写入 <code>wiki/queries/&lt;slug&gt;.md</code>，重新生成 <code>index.md</code>，并刷新启用且可用的embedding。目录中的 <strong>Saved Queries</strong> 分组使这些回答可被后续查询发现和复用。这补上了“使用Wiki也能积累Wiki”的一条路径。<span class="citations"><a href="#ref-29" aria-label="参考文献29">[29]</a><a href="#ref-25" aria-label="参考文献25">[25]</a></span></p>
+<div class="flow"><div><small>读取</small><strong>已有Wiki页面</strong><span>概念页与已保存查询页</span></div><b aria-hidden="true">→</b><div><small>综合</small><strong>生成回答</strong><span>基于检索内容组织答案</span></div><b aria-hidden="true">→</b><div><small>可选回写</small><strong>queries/</strong><span>query --save或审核后保存</span></div><b aria-hidden="true">→</b><div><small>复用</small><strong>更新目录与索引</strong><span>为后续查询提供上下文</span></div></div>
+<p><strong>查询页有自己的schema。</strong>固定版本代码写入 <code>title、summary、type: query、createdAt</code>，正文为生成的答案。它与概念页的 <code>kind: concept</code> 格式不同，应分别定义，不能假定两类页面具有相同frontmatter。<span class="citations"><a href="#ref-29" aria-label="参考文献29">[29]</a></span></p>
+<h4>持续演进：查询沉淀与来源更新是两条路径</h4>
+<div class="table-wrap"><table><thead><tr><th scope="col">更新来源</th><th scope="col">影响的内容</th><th scope="col">对应机制</th></tr></thead><tbody>
+<tr><td>一次新的查询与综合</td><td>查询页、目录及相关检索索引</td><td><code>query --save</code>选择性保存回答，支持后续复用。</td></tr>
+<tr><td>原始资料新增或变化</td><td>受影响的概念页及其来源关系</td><td>增量<code>compile</code>；<code>refresh --stale</code>对过期页面涉及的来源进行范围受限的重新编译。</td></tr>
+</tbody></table></div>
+<p>这里的 <strong>self-evolve（持续演进）</strong>体现为知识积累和更新机制：既能保留查询产生的综合结果，也能随来源变化维护已有知识。普通查询不会自动回写；保存查询页也不会自动改写相关概念页，生成答案仍属于派生内容，不能替代原始来源。<span class="citations"><a href="#ref-29" aria-label="参考文献29">[29]</a><a href="#ref-30" aria-label="参考文献30">[30]</a></span></p>
+<details><summary>固定版本的保存与审核约定</summary><p>本地版本5dc9102中，直接<code>--save</code>适用于默认profile；<code>--save --review</code>将回答放入候选区，审核前不写入正式查询页。保存前检查链接解析状态，但不等于验证答案事实正确。相同问题生成同一slug时，保存可替换对应查询页，并非自动保留多份历史版本。embedding刷新失败也不会撤销已保存页面。以上为代码行为说明，本轮没有执行查询或回写。<span class="citations"><a href="#ref-29" aria-label="参考文献29">[29]</a></span></p></details>
+<h3>3.5 增加文档结构页：SearchWiki 的扩展</h3>
+<p>主题页适合跨文档综合；对于有清晰章节的长文档，还可以增加按原文目录组织的<strong>文档概览与章节页</strong>。SearchWiki在 <code>documents/</code> 中保存这类内容，<code>topics/</code> 连接跨文档主题，<code>sources/</code> 保留页级JSON。<span class="citations"><a href="#ref-8" aria-label="参考文献8">[8]</a></span></p>
+<pre><code>wiki/
+├── index.md
+├── documents/
+│   ├── index.md
+│   └── doc_id/
+│       ├── index.md             # 文档概览、章节目录与页范围
+│       └── part_i/
+│           ├── index.md         # 本层章节目录
+│           └── item_1_business.md
+├── topics/
+│   ├── index.md
+│   └── risk_management.md       # 跨文档主题，链接相关文档和主题
+├── sources/
+│   └── doc_id.json              # 原文逐页记录：文本、页号及元数据
+└── log.md</code></pre>
+<p class="note">依据SearchWiki §3.2整理的结构示意；<code>documents/doc_id/part_i/item_1_business.md</code>为论文给出的路径示例，其余文件名用于说明组织方式。<span class="citations"><a href="#ref-8" aria-label="参考文献8">[8]</a></span></p>
+<p><strong>两种组织可以并存：</strong>文档结构页回答“某份资料的哪一章讲了什么”；主题页回答“多份资料围绕这个主题分别说了什么”。两者都需要指向sources中的具体依据。</p>
+<h3>3.6 页面 Schema：提前人为定义，编译时遵循</h3>
+<p><strong>页面 schema 需要在生成 Wiki 之前由人定义，编译器与 LLM 按该约定填写内容。</strong>预先明确哪些字段必须存在、正文采用哪些章节、链接如何表示、来源如何引用。语料决定生成哪些页面、怎样归类；页面格式不能在每次生成时临时变化。</p>
+<p>LLM-Wiki论文附录E规定知识页采用固定格式：<strong>YAML元数据 + 一行摘要 + 关键事实 + 关联页面 + 来源引用</strong>。下面按论文中的John V人物页作缩写示例，保留字段与章节名称，正文作中文转述。<span class="citations"><a href="#ref-23" aria-label="参考文献23">[23]</a></span></p>
+<div class="table-wrap"><table><thead><tr><th scope="col">位置</th><th scope="col">固定字段 / 章节</th><th scope="col">内容约定</th></tr></thead><tbody>
+<tr><td>YAML元数据</td><td><code>type、created、updated、aliases、tags</code></td><td>页面类别、创建/更新时间、别名列表与标签列表。</td></tr>
+<tr><td>正文入口</td><td>一级标题 + 一行引用式摘要</td><td>标明页面对象，简述其核心内容。</td></tr>
+<tr><td>事实内容</td><td><code>Key Facts</code></td><td>分条记录关键事实。</td></tr>
+<tr><td>页面关联</td><td><code>Related Pages</code></td><td>使用wikilinks指向关联页面，并说明关系。</td></tr>
+<tr><td>来源引用</td><td><code>Related Sources</code></td><td>链接到对应来源记录，供进一步核验。</td></tr>
+</tbody></table></div>
+<pre><code>---
+type: people
+created: xxxx-xx-xx
+updated: xxxx-xx-xx
+aliases: [John V of Anhalt-Zerbst]
+tags: [German nobility, House of Ascania]
+---
+# John V, Prince of Anhalt-Zerbst
+&gt; 阿斯坎尼家族的一位德意志亲王，人物页汇总其生平与家族关系。
+
+## Key Facts
+- 生于1504年9月4日，卒于1551年2月4日。
+- 父亲为Ernest I, Prince of Anhalt-Dessau。
+
+## Related Pages
+- [[people/Ernest-I-Prince-of-Anhalt-Dessau]] — 父亲
+
+## Related Sources
+- [[sources/digests/john-v-prince-anhalt-zerbst]] — 本人物的来源摘要</code></pre>
+<p class="note">示例依据论文附录E的Knowledge Page缩写，不是完整转载。日期沿用论文占位符，实际生成时填写真实创建/更新时间；别名、标签、事实与链接仅保留部分条目。该schema来自论文；“生成前由人定义schema”是本项目明确采用的约定。</p>
+<p>在此基础上，本项目还可预先定义唯一标识、来源版本与定位信息等字段。以下为项目层面的扩展建议，与论文示例字段区分：</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">对象</th><th scope="col">必需字段及类型</th><th scope="col">约束</th></tr></thead><tbody><tr><td>概览/分类索引</td><td>title: string；summary: string；entries: array&lt;{target, title, summary}&gt;</td><td>target必须指向已登记目录或页面；文本目录可承载这些逻辑字段，不一定存为JSON。</td></tr><tr><td>概念/主题页</td><td>page_id: string；type: enum；title: string；summary: string；body: Markdown；sources: SourceRef[]；related_pages: PageRef[]</td><td>page_id唯一；type来自已定义类别；无关联时数组为空，不编造链接。</td></tr><tr><td>来源引用 SourceRef</td><td>source_id: string；source_version: string；locator: object</td><td>locator明确采用行范围、物理页码或表格位置；引用必须可解析。</td></tr><tr><td>来源记录</td><td>source_id: string；path: string；format: string；version: string</td><td>保留完整原文或可访问原件，以及解析文本到原件的映射。</td></tr><tr><td>文档结构页（启用时）</td><td>document_id: string；parent_id: string|null；children: string[]；page_range: object</td><td>层级关系与页码范围一致，区分PDF物理页码和印刷页码。</td></tr><tr><td>公共元数据</td><td>created_at / updated_at: ISO 8601 string；aliases / tags: string[]</td><td>创建/更新时间与资料发布日期、业务报告期分别保存；schema自身也要有版本。</td></tr></tbody></table></div>
+<p><strong>链接也是schema的一部分。</strong>必须约定目标使用页面ID还是相对路径、别名如何解析、来源引用怎样定位。双向关联既可显式写回双方页面，也可由出链生成反向索引；链接存在本身不证明语义正确。</p>
+<details><summary>字段如何对应两个实际例子？</summary>
+<div class="table-wrap"><table><thead><tr><th scope="col">逻辑内容</th><th scope="col">LLM-Wiki论文示例</th><th scope="col">llm-wiki-compiler</th></tr></thead><tbody><tr><td>页面类型</td><td>type</td><td>kind</td></tr><tr><td>时间</td><td>created / updated</td><td>createdAt / updatedAt</td></tr><tr><td>别名和标签</td><td>aliases / tags</td><td>aliases / tags</td></tr><tr><td>摘要</td><td>正文开头的简短摘要</td><td>frontmatter.summary</td></tr><tr><td>主体内容</td><td>关键事实及关联页面</td><td>按主题生成的Markdown小节</td></tr><tr><td>来源</td><td>Related Sources与来源档案</td><td>sources数组及正文行号引用</td></tr></tbody></table></div>
+<p>这些差异应通过项目自己的schema固定下来。本文建议的page_id不要求一定写入frontmatter；也可以由规范目录和文件名确定，但必须能唯一解析。</p></details>
+<h3>3.7 本地可视化：从目录查看页面、链接与来源</h3>
+<p>现有 <strong>llmwiki viewer</strong> 将上述文件组织显示为可浏览的页面。可以从总目录找到主题，再查看正文、关联页与来源；图视图用于观察页面连接。它是llm-wiki-compiler的展示层，不是Karpathy发布的独立产品。</p>
+<p class="note">报告中的本地 Wiki viewer 未随网页发布；报告正文和研究引用可直接阅读。</p>
+<h3>3.8 定义 Schema 时可参考的词汇与数据模型</h3>
+<p>Dublin Core等并非同一类“数据库”，而是可借鉴的元数据词汇、标准或数据模型。它们帮助明确字段和关系，不规定概念页必须按哪套目录分类。</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">参考</th><th scope="col">用于定义什么</th><th scope="col">可借鉴内容</th></tr></thead><tbody><tr><td>Dublin Core</td><td>来源描述</td><td>标题、发布者、语言、主题等资源编目字段。<span class="citations"><a href="#ref-12" aria-label="参考文献12">[12]</a></span></td></tr><tr><td>Schema.org</td><td>文档/内容描述</td><td>CreativeWork的author、datePublished等属性。<span class="citations"><a href="#ref-13" aria-label="参考文献13">[13]</a></span></td></tr><tr><td>W3C Web Annotation</td><td>证据定位</td><td>对原文片段的选择与定位建模。<span class="citations"><a href="#ref-14" aria-label="参考文献14">[14]</a></span></td></tr><tr><td>Wikibase Data Model</td><td>结构化陈述（按需）</td><td>主体、属性、值、限定条件与引用；用于需要事实级查询的页面。<span class="citations"><a href="#ref-15" aria-label="参考文献15">[15]</a></span></td></tr><tr><td>W3C SKOS</td><td>主题与概念体系</td><td>规范标签、别名、上位/下位和相关概念关系。<span class="citations"><a href="#ref-16" aria-label="参考文献16">[16]</a></span></td></tr><tr><td>W3C PROV-O</td><td>生成与版本溯源</td><td>资料、处理活动、生成者，以及使用、生成和派生关系。<span class="citations"><a href="#ref-17" aria-label="参考文献17">[17]</a></span></td></tr></tbody></table></div>
+<div class="closing"><p>先由人定义页面schema，再由编译过程依据语料生成页面、组织分类并建立链接。知识可以按主题分类，也可以统一放置；字段格式、关联方式与来源引用须遵循预先确定的约定。</p></div></section>
+<section id="construction" class="section"><div class="section-heading"><span class="section-number">04</span><div><h2>Wiki 生成方法</h2><p>先看如何从空库生成第一批页面，再看不同系统怎样组织来源、主题与后续更新。</p></div></div>
+<p>为了从头理解 Wiki 构建，先从本地 <code>llm-wiki-compiler</code> 看完整过程：准备来源和页面规则，编译成页面，再补齐链接与索引。之后对照 SearchWiki 如何利用文档目录联合生成摘要和主题，以及 LLM-Wiki 如何在持续导入时用错误反馈改进 Wiki。</p>
+
+<h3>4.1 llm-wiki-compiler：从空库开始，抽取概念并生成页面</h3>
+<p>首次运行时，来源目录中的文件都视为待处理来源。系统不要求来源先有统一的 PDF 目录结构；解析方式由项目提供。模型先从每份来源中抽取概念候选，程序把不同来源指向同一概念的候选合并，再让模型按页面规则生成概念页。收尾阶段生成 schema 规定的 seed pages、解析页面间链接并生成索引。之后再次运行时，系统只重做新增、变更或受影响的来源和页面。</p>
+<pre>输入：来源文件 + 页面 schema + 空 Wiki
+首次建库：
+  1. 找出所有待处理来源
+  2. 对每份来源调用模型抽取概念候选
+     输入：来源文本 + 当前概念索引
+     输出：概念候选 + 来源证据
+  3. 程序清洗候选，并合并同一概念的多份来源
+  4. 对每个合并概念调用模型生成页面
+     输入：概念信息 + 来源证据 + 页面 schema
+     输出：页面候选
+  5. 按审核策略写入页面；生成 schema 要求的 seed pages
+  6. 解析页面间链接，修复可识别的断链，生成索引
+输出：第一版 Wiki
+
+后续更新：
+  只处理新增/变更来源及受影响页面
+  重做抽取、合并、页面生成和收尾链接/索引</pre>
+<p>这里模型负责“从来源中抽取概念”和“按 schema 写概念页”；程序负责变化检测、候选合并、审核/发布控制、链接解析及索引生成。schema seed pages 是项目配置的入口页等基础页面，不代表模型先生成了全部 Wiki 结构。<span class="citations"><a href="#ref-9">[9]</a><a href="#ref-25">[25]</a><a href="#ref-27">[27]</a></span></p>
+
+<h3>4.2 SearchWiki：按文档目录生成摘要，同时登记跨文档主题</h3>
+<p>SearchWiki 面向有文档结构的语料。它先解析 PDF 页面并建立目录树，再调用大模型生成章节摘要和全局主题。主题页的链接分两种：主题与其他主题的关联由大模型在主题综合阶段选择；主题与文档概览的关联由程序根据该主题汇集到的来源自动生成。之后渲染程序把这些关联写成 Markdown 链接。</p>
+<pre>输入：一组 PDF / 文本文件
+1. 解析页面，保存页码、文本和版面信息到 sources/
+2. 提取目录和页码范围，建立 documents/ 章节树
+3. 按文档编译单元调用大模型，联合生成章节摘要和主题登记操作
+4. 汇总主题贡献；对每个规范主题调用大模型综合来源证据，并输入完整主题注册表
+     输出：主题页段落 + related_topic_ids（最多5个，不含当前主题）
+5. 由程序写入页面链接：
+     - related_topic_ids 决定主题页之间的链接
+     - 主题的来源贡献记录决定主题页链接到哪些文档概览
+     - 文档目录树决定文档页和章节页之间的链接
+6. 渲染器把页面关系写为相对 Markdown 链接；摘要引用保留页码并链接到 sources/
+7. 生成根目录、子目录和主题索引，以及构建日志</pre>
+<p>因此，主题页之间的链接不是在第一次章节联合编译时生成的：该阶段负责登记主题及其来源。所有主题登记完成后，主题综合调用才根据全局注册表返回相关主题 ID；程序校验 ID 有效、不是当前主题后，再由渲染器写成页面链接。主题页到文档概览的链接不由大模型判断，而是根据主题的来源贡献记录自动建立。论文描述了最终页面关系；以上先后顺序和代码分工是本地 POC 的具体实现。<span class="citations"><a href="#ref-8">[8]</a> · <span class="local-reference">主题综合 Prompt（本地材料，未随网页发布）</span> · <span class="local-reference">输出校验（本地材料，未随网页发布）</span> · <span class="local-reference">链接渲染（本地材料，未随网页发布）</span></span></p>
+
+<h3>4.3 LLM-Wiki：逐段更新 Wiki，把错误经验用于后续批次</h3>
+<p>LLM-Wiki 适合持续导入新资料。每个 batch 再拆成 passage 逐条处理：先选相关旧页面，模型生成更新，系统校验后写入 Wiki。发现的问题进入 Error Book，转成下一批编译时使用的规则；定期再由模型修复全库中的语义问题。完整循环见论文附录 D。</p>
+<pre>输入：新资料 batch + 当前 Wiki + 来源档案 + Error Book
+对 batch 中的每段资料：
+  1. 根据目录索引选择相关旧页面
+  2. 调用模型生成 Wiki 更新
+     输入：当前资料段 + 相关页面 + 有效错误规则
+     输出：页面更新 + 链接/目录更新
+  3. 检查结构和内容依据
+  4. 若发现错误：写入 Error Book；自动修复结构问题
+  5. 将更新应用到 Wiki
+定期执行：
+  6. 调用模型修复全库语义问题
+  7. 重新验证，并关闭已解决的错误记录</pre>
+<p>它和首次建库的区别是，主流程围绕“新 passage 到来后如何更新已有 Wiki”运转；错误记录会反馈到后续批次，形成持续修正循环。<span class="citations"><a href="#ref-23">[23]</a></span></p>
+
+<h3>4.4 两套本地 Demo 的实际 Token 用量</h3>
+<p>下表来自 10 份 PDF 的真实运行记录，模型均为 DeepSeek V4 Pro。Token 数是模型 API 返回的 input/output usage；PDF 转文本、程序合并、链接检查和索引生成不属于模型 Token。SearchWiki 的请求日志保留了任务类型，因此可以按阶段汇总；compiler demo 只记录了整次运行总量，现有日志不能可靠拆成“抽取”和“页面生成”各自的 Token。</p>
+<div class="table-wrap"><table><thead><tr><th>Demo / 阶段</th><th>模型响应数</th><th>输入 Token</th><th>输出 Token</th><th>合计</th></tr></thead><tbody>
+<tr><td>SearchWiki：目录规划（toc）</td><td>12（10次通过，2次未通过）</td><td>154,239</td><td>6,030</td><td>160,269</td></tr>
+<tr><td>SearchWiki：章节摘要与主题联合编译（joint）</td><td>40（36次通过，4次未通过）</td><td>713,640</td><td>60,985</td><td>774,625</td></tr>
+<tr><td>SearchWiki：文档概览（overview）</td><td>10（全部通过）</td><td>50,501</td><td>10,030</td><td>60,531</td></tr>
+<tr><td>SearchWiki：主题综合（topic）</td><td>27（26次通过，1次未通过）</td><td>50,912</td><td>23,330</td><td>74,242</td></tr>
+<tr><td><strong>SearchWiki 合计</strong></td><td><strong>89次响应</strong></td><td><strong>969,292</strong></td><td><strong>100,375</strong></td><td><strong>1,069,667</strong></td></tr>
+<tr><td>llm-wiki-compiler：33份 Markdown 来源段的概念抽取与候选页生成</td><td>307次成功调用</td><td>7,889,122</td><td>355,730</td><td>8,244,852</td></tr></tbody></table></div>
+<p>本次运行中，SearchWiki 共计 1.07M token，compiler 共计 8.24M token。两者处理单位和产物不同，这组数字只反映各自 Demo 的本次运行；分阶段均值、调用统计及数据预处理口径见文末附录。</p>
+
+<h3>4.5 三种方法的区别</h3>
+<div class="table-wrap"><table><thead><tr><th>方法</th><th>从什么开始处理</th><th>模型主要做什么</th><th>结果如何形成</th></tr></thead><tbody>
+<tr><td>llm-wiki-compiler</td><td>来源文件及 schema；首次运行可从空 Wiki 开始。</td><td>来源级概念抽取；概念级页面生成。</td><td>候选合并、审核发布、补 seed pages、解析链接、生成索引。</td></tr>
+<tr><td>SearchWiki</td><td>带目录或可提取目录的文档语料。</td><td>每份文档联合生成层级摘要和主题注册操作。</td><td>形成 documents / topics / sources 三层及目录导航。</td></tr>
+<tr><td>LLM-Wiki</td><td>新来源 batch 和已有 Wiki。</td><td>逐 passage 生成更新，并周期性修复语义问题。</td><td>错误写入 Error Book，约束后续生成并触发修复。</td></tr></tbody></table></div>
+<p>简单来说：compiler 展示“从来源抽取知识、逐步搭出页面库”的工程流水线；SearchWiki 展示“用文档目录和全局主题组织知识”的编译方式；LLM-Wiki 展示“持续导入时如何检查、记录错误并修复”的反馈循环。它们可以组合成一个系统，但各自论文或代码描述的具体环节并不完全相同。</p>
+<h3>4.6 两套本地 Demo 的调用数差异</h3>
+<div class="table-wrap"><table><thead><tr><th>对比项</th><th>llm-wiki-compiler Demo</th><th>SearchWiki Demo</th></tr></thead><tbody>
+<tr><td>LLM 处理单位</td><td>先按来源抽取，再按合并后的每个概念分别生成页面。</td><td>按目录规划和联合编译单元处理；章节摘要与主题抽取在同一调用中完成。</td></tr>
+<tr><td>实际调用构成</td><td>约 33 次来源抽取 + 274 次候选页生成 = 307 次成功调用。</td><td>10 次目录 + 36 次联合编译 + 10 次概览 + 26 次主题综合 = 82 次通过调用；另有 7 次未通过响应，总计 89 次响应。</td></tr>
+<tr><td>调用差异主因</td><td>274 个主题/概念候选各自触发一次页面生成；每次将该概念对应的来源证据交给模型。</td><td>多数章节摘要和主题注册合并在 36 个联合单元中处理；只有最终 26 个主题各自再做一次主题综合。</td></tr>
+<tr><td>本次总用量</td><td>8.245M tokens。</td><td>1.070M tokens。</td></tr></tbody></table></div>
+<p><strong>结论：</strong>调用次数的主要差异来自生成粒度：compiler 产出 274 个概念页，因此逐页调用；SearchWiki 产出 137 个章节节点和 26 个主题页，并把章节摘要与主题登记合并到联合调用中。compiler 的页面生成还会为每个概念重新提交相关来源证据，增加重复输入。两次 Demo 的输出结构和提示词不同，7.7 倍 token 差异是本次实测结果，不能单独解释为算法效率差异。<span class="citations"><span class="local-reference">compiler 代码与运行记录（本地材料，未随网页发布）</span> · <span class="local-reference">SearchWiki 运行记录（本地材料，未随网页发布）</span></span></p>
+</section><section id="evaluation" class="section"><div class="section-heading"><span class="section-number">05</span><div><h2>检索方法：从关键词匹配到 Agent 导航</h2><p>检索方法可以作用于 Wiki 的不同页面和层级；Wiki 结构与底层召回算法可以组合使用。</p></div></div>
+<p>第 02 节把检索方法归为四类：B1 平铺打分、B2 层级导航、B3 图检索与扩展、B4 Agent 工具循环。本节按这四类展开：BM25、Embedding 和 RRF 用于给候选内容排序；RAPTOR 展示了如何沿树的父子层级检索；Wiki 链接可以把检索从一个页面扩展到相关页面；Agent 则组合搜索、读取和跳转，并根据已获得的证据决定下一步。检索对象可以是主题页、文档页、章节页或来源片段，具体取决于任务需要的粒度。</p>
+
+<h3>5.1 平铺检索：对选定单元打分，直接取 Top‑k</h3>
+<p>最简单的做法是把所有选定单元放进一个候选集合，针对问题排序并取前 k 个。BM25 根据查询词与文本词项的匹配程度排序，适合明确实体名、术语、编号等词面线索；Embedding 将问题和单元编码为向量，再按相似度排序，适合表达不同但意思相近的查询。两者都可以检索整页或 chunk；也可以分别召回候选，再用 RRF 合并排名。SearchWiki 的 <code>search_wiki</code> 使用多查询 BM25 和 RRF 检索 Wiki 页面。<span class="citations"><a href="#ref-8">[8]</a></span></p>
+<div class="equation">RRF(d) = Σ<sub>r ∈ 排名列表</sub> 1 / (c + rank<sub>r</sub>(d))</div>
+<pre>输入：问题 q，检索单元集合 U，返回数量 k
+BM25：对 U 按 q 的词项匹配排序
+Embedding：对 U 按 sim(embed(q), embed(u)) 排序
+可选：将多组排名用 RRF 合并
+返回：排名前 k 的页面或片段</pre>
+<p>平铺检索实现直接，检索器也容易替换；它本身不会沿目录或主题链接继续找相关页面。若初次召回漏掉关键证据，通常需要改写查询后再次检索，或增加其他导航机制。</p>
+
+<h3>5.2 树检索：利用父子结构逐层缩小范围</h3>
+<p>若 Wiki 有文档—章节—小节等父子结构，可以先对根层节点打分，再只在入选节点的子节点中继续打分。RAPTOR 的 tree traversal 正是这种方式：从根层开始，每层按 query embedding 相似度选 top‑k 子节点，并重复到叶子；最后合并沿途选中的各层节点作为回答上下文。因此，标准 tree traversal 并不会因为中间摘要看起来足够就自动停止，它按设定深度向下搜索。<span class="citations"><a href="#ref-4">[4]</a></span></p>
+<pre>候选 = 根节点
+已选 = []
+对每一层，直到叶子：
+  按 query 与候选节点的相似度排序
+  本层选出 top-k 节点，加入已选
+  候选 = 本层选中节点的子节点
+返回：已选节点的摘要/正文</pre>
+<p>这里每层的相似度可以由 Embedding 计算；若使用词项检索，也可以在每层节点文本上运行 BM25。也就是说，树结构负责限制下一层的候选范围，BM25 或 Embedding 负责在当前候选中排序。用户提出的“程序按树筛选部分分支”与 RAPTOR tree traversal 思路相近，但“必须走到叶子”是 RAPTOR 这一路径的设定，不是所有层级检索的必然要求：程序可以自行设置最大深度或停止条件。</p>
+<p>RAPTOR 还提出 collapsed tree：将所有层级的节点放入同一候选集合，直接从摘要节点和叶子节点中选相关节点，并在达到 token 预算后停止。它可以直接返回中间层摘要，不需要从根逐级走到叶子；代价是检索时要在整个树的节点集合中搜索。论文在其特定实验设置中采用 collapsed tree 作为主方法。<span class="citations"><a href="#ref-4">[4]</a></span></p>
+
+<h3>5.3 图检索与链接扩展：从命中页面继续找相关页面</h3>
+<p>当页面之间存在主题关联、实体关系或显式 Wiki 链接时，检索可以先找到一个相关页面，再沿页面关系扩展邻居。例如，先命中公司主题页，再读取其链接的业务分部页或对应来源页。LLM-Wiki 将 link-following 作为检索操作；SearchWiki 的主题页也链接相关文档概览和其他主题。<span class="citations"><a href="#ref-8">[8]</a><a href="#ref-23">[23]</a></span></p>
+<pre>输入：初始检索得到的页面集合 S，页面链接图 G
+候选 = S
+重复 0 到 h 跳：
+  将候选页面中符合关系/类型条件的链接目标加入候选
+  可按 BM25 / Embedding 对新候选重新排序
+  去重，并保留来源路径
+返回：初始命中页及扩展得到的相关页面</pre>
+<p>链接扩展利用 Wiki 已有的关联结构，适合问题中间实体或关联页面尚未直接出现在查询中的场景。扩展范围需要控制跳数、页面类型或候选数量，否则主题页的高连接度可能带入大量无关页面。这里的约束方式是工程设计选择；论文支持链接遍历这一检索动作，但未规定统一的扩展评分公式。</p>
+<h3>5.4 Agent 检索：搜索、读取、跟链接，并判断是否继续</h3>
+<p>Agent 检索把一次 Top‑k 召回变成多轮过程。Agent 先调用搜索或目录工具，再读取返回页面；读取结果中的主题、章节和来源链接成为下一步入口。Agent 根据已经读到的内容决定继续搜索、沿链接跳转、下钻到来源页，还是停止并作答。这样可以在中间证据已经充分时停止，也可以在发现证据缺口时换方向或回退。SearchWiki 与 LLM-Wiki 都描述了这种基于中间观察的搜索—读取—验证过程。<span class="citations"><a href="#ref-8">[8]</a><a href="#ref-23">[23]</a></span></p>
+<div class="table-wrap"><table><thead><tr><th>工具</th><th>输入与返回</th><th>在 Wiki 中的作用</th></tr></thead><tbody>
+<tr><td><code>search(query)</code></td><td>输入查询，返回匹配的页面或文件路径及摘要。</td><td>底层可以使用 BM25、Embedding 或二者融合；SearchWiki 的 search_wiki 使用多查询 BM25 + RRF。</td></tr>
+<tr><td><code>read(path)</code></td><td>输入页面路径，返回页面正文和其中的链接。</td><td>读取主题页、文档概览或章节页，获取内容和后续跳转线索。</td></tr>
+<tr><td><code>read_source(document, page_range)</code></td><td>输入文档标识和页码范围，返回对应原文页。</td><td>在摘要不足以支持答案时，定位到来源层核实细节；SearchWiki 以 read_page 读取页级 JSON。</td></tr>
+<tr><td><code>list / grep</code></td><td>输入目录或文本模式，返回文件列表或匹配行。</td><td>浏览 schema 定义的目录，或在页面、主题和来源中查找精确术语。</td></tr></tbody></table></div>
+<pre>输入：问题 q，Wiki 工具，调用预算 T
+上下文 = []
+重复，最多 T 轮：
+  Agent 根据 q 和上下文选择 search / read / read_source / list / grep
+  工具返回页面、正文、链接或来源证据
+  将返回内容加入上下文
+  如果证据足以回答：停止
+  否则：改写查询、沿链接跳转、下钻或回退
+输出：基于已读证据的答案和来源</pre>
+<p>这类方法能按证据充分性决定是否继续，但需要实现工具接口、路径与链接解析、调用状态和预算控制；这部分工程量高于单次 BM25/Embedding 查询。论文展示了相应的工具交互设计，但具体开发复杂度取决于工具数量、权限边界和 Wiki schema，不能仅从论文结果推断。</p>
+
+<h3>5.5 四类方法可以组合</h3>
+<p>这几种方式不是互斥的。一个实用组合是先用 BM25/Embedding 在主题页或概览页中召回入口，再沿 Wiki 目录或链接定位章节，最后读取来源页核对证据；Agent 可以负责决定何时执行每一步。对于已有结构的语料，也可以直接将每层节点用 Embedding 排序；或者把所有层级节点平铺检索。检索器决定“如何排序”，Wiki 结构决定“有哪些单元及其关系”，Agent 决定“下一步做什么以及何时停止”。</p>
+<div class="equation">问题 → 检索入口（BM25 / Embedding / RRF） → 读取页面 → （按需）沿目录/链接下钻 → 来源核验 → 足够则回答</div>
+<p>实施上可以从平铺 BM25 或 Embedding Top‑k 起步，再增加层级候选筛选或 Agent 工具循环；是否值得增加复杂度，应由目标任务的证据覆盖、时延和调用成本决定。这是基于上述论文机制提出的工程路线，不是论文已经验证适用于所有语料的结论。</p>
+</section><section id="conclusion" class="section"><div class="section-heading"><span class="section-number">06</span><div><h2>总结与判断</h2><p>方法选择取决于问题类型、资料形态、响应要求和知识复用频率。</p></div></div>
+<div class="two-col"><div><span class="tag verified">目前有依据</span><h3>不同结构面向不同检索任务</h3><p>BM25、向量检索和混合检索提供直接的候选排序；文档树和 RAPTOR 面向长文档中的章节定位与多粒度理解；GraphRAG面向整个语料的主题归纳；SearchWiki展示了对多文档资料进行预编译，并训练Agent通过工具多轮导航的方案。论文证明的是特定任务和数据集上的可行性，不等于任一方案适合所有业务。<span class="citations"><a href="#ref-4" aria-label="参考文献 4">[4]</a><a href="#ref-5" aria-label="参考文献 5">[5]</a><a href="#ref-6" aria-label="参考文献 6">[6]</a><a href="#ref-8" aria-label="参考文献 8">[8]</a></span></p></div><div><span class="tag pending">仍待验证</span><h3>在目标场景里的收益和代价</h3><p>本项目需要验证：Wiki主题分类和Prompt能否减少后续整理时间；跨文件合并是否保留关键差异；Agent多轮调用是否改善证据召回，以及首字时间、排序等待和总响应时间增加多少。论文结果不能替代本地语料和问题集上的对照。</p></div></div>
+<h3>按具体工作场景选择方案</h3>
+<p>下表是面向部署的初步判断。语料规模只是一个条件；“5,000条以内”是便于定义试点范围的示例，不是论文给出的算法适用阈值。</p>
+<div class="table-wrap"><table><thead><tr><th>具体场景</th><th>优先试用</th><th>为什么适合</th><th>代价与风险</th></tr></thead><tbody>
+<tr><td>内部产品手册、制度库或客服知识库，试点不超过约5,000条记录；问题集中在常见、明确的事实查询，例如“报销上限是多少”“某功能在哪个版本上线”；要求尽快返回命中内容。</td><td>BM25；用户常用说法与原文差异较大时，再加 Embedding 并用 RRF 合并。</td><td>直接按问题找对应条目，结构和调用链较简单，适合作为低时延基线。</td><td>跨多条记录的比较和归因能力有限；5,000条只是试点规模示例，实际效果还取决于记录长度、过滤条件、硬件和索引实现。</td></tr>
+<tr><td>一份目录清楚的长报告、年报、合同或法规；用户经常问“某个指标在哪一节”“两个条款有什么区别”，并要求回到准确页码或原文。</td><td>文档目录树 / PageIndex；如果问题需要整篇文档的多段信息，再评估 RAPTOR 的摘要树检索。</td><td>先按目录定位章节，再读取页级证据；RAPTOR论文在 QASPER、NarrativeQA 和 QuALITY 等长文档问答任务上评估多粒度摘要检索。<span class="citations"><a href="#ref-4">[4]</a><a href="#ref-5">[5]</a></span></td><td>依赖目录和页面解析质量；层级路由可能漏掉目录标题没有体现的证据，逐层读取也可能增加等待。</td></tr>
+<tr><td>分析师反复比较同一公司不同年份的年报、业绩会和行业研究，例如追踪资本开支、云业务和 AI 商业化在不同来源、期间里的变化。</td><td>带 documents / topics / sources 的主题 Wiki，例如 SearchWiki 的组织方式。</td><td>把跨文件主题、文档概览和原文定位提前组织，适合反复复用同一批资料。SearchWiki在 ViDoRe、FinanceBench 和对话记忆基准上评估了 Wiki 导航方案。<span class="citations"><a href="#ref-8">[8]</a></span></td><td>建库和资料更新需要额外模型调用；主题过宽会混淆期间或口径，主题过碎又会降低复用价值，必须评估分类和引用质量。</td></tr>
+<tr><td>管理层希望了解整个资料库的共性，例如“过去三年行业研究反复提到哪些增长驱动”“所有访谈的主要分歧是什么”，而不是找一条具体事实。</td><td>GraphRAG的全局检索，或其他基于社区/主题摘要的全语料综合。</td><td>问题本身要求归纳全库，而不是命中少数片段；GraphRAG论文正是针对整个语料的全局问题设计社区摘要和 map-reduce 回答。<span class="citations"><a href="#ref-31">[31]</a><a href="#ref-6">[6]</a></span></td><td>图谱和社区摘要需要预处理；若实际问题只是查一个数字或条款，这类全局建模可能增加不必要的构建成本。</td></tr>
+<tr><td>研究问题没有固定检索路径，例如需要先查公司计划，再核对后续披露；如果证据不足，还要换关键词、读关联主题或回到另一份文档继续查。</td><td>Agent 调用搜索、读取、来源回查和链接跳转；底层检索仍可使用 BM25 或 Embedding。</td><td>可以根据中间证据改写查询、选择下一份资料，并在证据足够时停止。SearchWiki研究了这种多轮工具导航。<span class="citations"><a href="#ref-8">[8]</a></span></td><td>规划和工具调用可能延后首字、增加排序等待、总响应时间及Token；若问题路径固定，Agent的动态决策可能没有必要。</td></tr>
+</tbody></table></div>
+<h3>推荐的研究顺序</h3><ol class="steps"><li><strong>先选一个准备部署的具体场景。</strong>明确资料类型、记录规模、典型问题、更新频率、答案引用要求和可接受的响应时间。</li><li><strong>建立简单检索基线。</strong>在同一语料和问题集上测 BM25、Embedding 或混合召回的命中率、答案质量、排序等待和总响应时间。</li><li><strong>针对复用需求调 Wiki 生成。</strong>小规模对照主题分类、同义主题复用和 Prompt；同时记录建库时间、输入/输出 Token、覆盖率、冲突保留情况和人工修订量，找出节省时间与算力的配置。</li><li><strong>再判断是否部署 Agent。</strong>对同一批问题比较传统检索与 Agent 的证据召回、答案质量、首字时间、总响应时间和调用成本，确认多步导航带来的收益能否覆盖代价。</li><li><strong>按结果部署并持续精调。</strong>锁定场景和评测问题，选择当前综合表现合适的方案，再根据真实失败案例调整分类、Prompt、索引和工具流程。</li></ol>
+<div class="closing"><span class="eyebrow">本版结论</span><p>先从明确场景和快速基线开始，再按证据决定是否增加 Wiki 结构或 Agent 导航。最终目标是在可接受的时延和成本下，稳定找到正确、可核验的证据。</p></div>
+</section>
+<section id="audit" class="section"><div class="section-heading"><span class="section-number">A</span><div><h2>材料融合与表述修订</h2><p>原始PDF内容如何进入本报告，哪些内容暂不作为结论。</p></div></div>
+<div class="table-wrap"><table><thead><tr><th scope="col">原始材料位置</th><th scope="col">本报告归位</th><th scope="col">修订或处理</th></tr></thead><tbody><tr><td>第1页：partition、压缩与局部比较</td><td>第2节：方案空间</td><td>补充非互斥归属；区分摘要压缩与总存储压缩。</td></tr><tr><td>第1—3页：A/B分类矩阵</td><td>第2节：方案空间</td><td>保留分类，避免把结构、算法与Agent控制层当成互斥项。</td></tr><tr><td>第4—6页：Wiki编译与检索命令</td><td>第3节：主题页结构与来源组织；生成方法待补充</td><td>按固定代码和本地页面核对目录、字段与引用格式。</td></tr><tr><td>第6—10页：元数据、证据、主张与标准</td><td>第3节：数据契约与标准参考</td><td>明确schema及不同实现的字段映射；区分项目约定与标准参考。</td></tr><tr><td>第11页：RAPTOR与Benchmark</td><td>第2、5节</td><td>限定collapsed实验结论；核实主要数据集，未核实条目保留待补充。</td></tr><tr><td>其他方法名：NaviRAG、Corpus2Skill、GrepSeek、NapMem等</td><td>扩展研究候选</td><td>本版未逐项核实具体版本与结果，不用名称堆叠替代机制比较。</td></tr></tbody></table></div>
+<p class="note">原始PDF部分宽表的文本提取结果不完整，因此没有依据残缺单元格补造方法名称或实验结论。后续补充原表或论文后可继续扩展。</p></section>
+<section id="appendix" class="section"><div class="section-heading"><span class="section-number">附</span><div><h2>附录：本地 Demo 的 Token 与调用口径</h2><p>补充第 04 节的运行统计、预处理过程和调用数解释。</p></div></div>
+<h3>SearchWiki</h3>
+<p>89 次模型响应中有 7 次未通过结构校验；表内 Token 统计包含这些响应及后续修复。另有 2 次请求没有收到模型响应，因此无法计入 Token。恢复运行时复用的 51 次缓存结果不是额外模型调用。</p>
+<p>按通过的任务粗略平均，每份文档约消耗 16.0k token 做目录规划、21.5k token 做联合章节编译、6.1k token 做概览；26 个主题的综合阶段约为 2.9k token/主题。均值受本次语料、Prompt 和重试影响，不代表固定单价或普遍成本。<span class="local-reference">运行记录（本地材料，未随网页发布）</span></p>
+<h3>llm-wiki-compiler</h3>
+<p>这次运行没有让模型读取或解析 PDF。输入是预先准备好的 885 页 <code>pages.jsonl</code> 文本；本地脚本为每页添加物理页码标题，按约 50,000 字符并仅在页边界切分为 33 份 Markdown 来源文件，同时生成页码与 Markdown 行号映射。OCR 和版面文本解析不计入 307 次模型调用。</p>
+<p>调用数对应两阶段：33 份来源各调用一次模型抽取概念；合并后生成 274 个候选页面，每页再调用一次模型生成内容，合计 307 次成功调用。8.24M token 是这 307 次成功调用的累计值，包含生成或校验失败后的修复，不含未成功请求。现有 usage 记录没有阶段字段，无法把 7.89M 输入和 356K 输出准确拆分到概念抽取与页面生成。<span class="local-reference">流程与运行记录（本地材料，未随网页发布）</span></p>
+</section>
+<section id="references" class="section"><div class="section-heading"><span class="section-number">R</span><div><h2>参考资料与核验范围</h2><p>外部资料核验日期：2026-11-16。论文、项目文档、本地审计与设计建议分别标注。</p></div></div><ol class="references"><li id="ref-1"><span class="local-reference">用户调研材料（本地材料，未随网页发布）</span><p>《Agent Wiki 调研》，11页。本报告的材料起点；项目名及效果判断经核实后使用。</p></li><li id="ref-2"><a href="https://arxiv.org/abs/2005.11401" target="_blank" rel="noopener noreferrer">Lewis et al. · Retrieval-Augmented Generation</a><p>2020，原始 RAG 论文。用于界定检索增强生成，不代表全部现代 RAG 实现。</p></li><li id="ref-3"><a href="https://github.com/facebookresearch/faiss/wiki/Faiss-indexes" target="_blank" rel="noopener noreferrer">Faiss · Faiss indexes</a><p>官方索引文档；区分 exhaustive Flat 与非穷举 IVF/HNSW。</p></li><li id="ref-4"><a href="https://arxiv.org/html/2401.18059v1" target="_blank" rel="noopener noreferrer">Sarthi et al. · RAPTOR</a><p>2024，§3 Querying、Figure 3 及 Appendix F。引用固定 v1；比较范围为论文中的实验设置。</p></li><li id="ref-5"><a href="https://github.com/VectifyAI/PageIndex" target="_blank" rel="noopener noreferrer">VectifyAI · PageIndex</a><p>官方项目说明，访问于2026-11-16。用于说明文档树与推理式检索；不引用宣传性性能数字。</p></li><li id="ref-6"><a href="https://microsoft.github.io/graphrag/query/overview/" target="_blank" rel="noopener noreferrer">Microsoft · GraphRAG query overview</a><p>官方文档：Local、Global、DRIFT、Basic 等查询方式；Global 的 map-reduce 开销说明。</p></li><li id="ref-7"><a href="https://arxiv.org/abs/2405.14831" target="_blank" rel="noopener noreferrer">Gutiérrez et al. · HippoRAG</a><p>2024，知识图与 Personalized PageRank 的组合。</p></li><li id="ref-8"><a href="https://arxiv.org/html/2608.29953v1" target="_blank" rel="noopener noreferrer">Singh et al. · SearchWiki</a><p>2026-08-30，预印本 v1；§3.2 构建、Table 1 工具、§5.4/Table 6 消融。论文报告，未在本项目复现。</p></li><li id="ref-9"><a href="https://github.com/atomicstrata/llm-wiki-compiler/tree/5dc9102f5c594d40c7e293e5005a93c42790c556" target="_blank" rel="noopener noreferrer">llm-wiki-compiler · 固定版本源码</a><p>本地 HEAD = 5dc9102f5c594d40c7e293e5005a93c42790c556；以固定代码而非当前 README 推断本地行为。</p></li><li id="ref-10"><span class="local-reference">本地代码审计 · 查询链路与 schema（本地材料，未随网页发布）</span><p>2026-11-13 审计记录；本轮复核 query-selection.ts 与 context/ranking.ts 的关键分支。</p></li><li id="ref-11"><a href="https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion" target="_blank" rel="noopener noreferrer">Elastic · Reciprocal rank fusion</a><p>官方 RRF 定义及多结果列表合并公式；并不要求一定存在向量检索。</p></li><li id="ref-12"><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/" target="_blank" rel="noopener noreferrer">DCMI · Metadata Terms</a><p>资源编目术语，如 title、publisher、language、subject。</p></li><li id="ref-13"><a href="https://schema.org/CreativeWork" target="_blank" rel="noopener noreferrer">Schema.org · CreativeWork</a><p>网页及数字内容描述词汇，如 author、datePublished。</p></li><li id="ref-14"><a href="https://www.w3.org/TR/annotation-model/" target="_blank" rel="noopener noreferrer">W3C · Web Annotation Data Model</a><p>2017 Recommendation；SpecificResource 与 Selector 提供片段定位建模参考。</p></li><li id="ref-15"><a href="https://www.mediawiki.org/wiki/Wikibase/DataModel" target="_blank" rel="noopener noreferrer">Wikibase · DataModel</a><p>Statement、qualifiers、references 等结构；本文的业务 JSON 为项目示例而非该标准序列化。</p></li><li id="ref-16"><a href="https://www.w3.org/TR/skos-reference/" target="_blank" rel="noopener noreferrer">W3C · SKOS Reference</a><p>2009 Recommendation；概念标签、别名、broader/narrower/related。</p></li><li id="ref-17"><a href="https://www.w3.org/TR/prov-o/" target="_blank" rel="noopener noreferrer">W3C · PROV-O</a><p>2013 Recommendation；Entity、Activity、Agent 及生成、派生、使用关系。</p></li><li id="ref-18"><a href="https://github.com/patronus-ai/financebench" target="_blank" rel="noopener noreferrer">Patronus AI · FinanceBench</a><p>官方数据仓库；公开样本150题，含答案及证据，不应与完整10,231题规模混淆。</p></li><li id="ref-19"><a href="https://github.com/StonyBrookNLP/musique" target="_blank" rel="noopener noreferrer">MuSiQue · 官方仓库</a><p>多跳组合问答及其数据/评测入口；使用时固定具体数据版本。</p></li><li id="ref-20"><a href="https://arxiv.org/abs/2601.08620" target="_blank" rel="noopener noreferrer">Loison et al. · ViDoRe v3</a><p>视觉丰富文档中的检索、定位与回答评测；与纯文本 OCR 路径应区分输入条件。</p></li><li id="ref-21"><span class="local-reference">本地 POC · 首次全量运行记录（本地材料，未随网页发布）</span><p>既有实测记录；本轮未重新运行生成、问答或性能基准。</p></li><li id="ref-22"><span class="local-reference">本地 POC · 结构校验产物（本地材料，未随网页发布）</span><p>可核对现有结构验证结果；链接有效不等于陈述得到语义支持。</p></li><li id="ref-23"><a href="https://arxiv.org/html/2605.25480" target="_blank" rel="noopener noreferrer">Ming et al. · Retrieval as Reasoning: Self-Evolving Agent-Native Retrieval via LLM-Wiki</a><p>arXiv:2605.25480，本轮读取版本为v2；§1—2讨论扁平chunk匹配、关系遍历与知识组织。与SearchWiki共同作为开头问题描述的参考；计算开销与冗余为本报告提出的改进关注点，不作为两篇论文已证明的普遍性能结论。</p></li><li id="ref-24"><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" target="_blank" rel="noopener noreferrer">Karpathy · LLM Wiki 原始想法</a><p>基于本地保留快照ac46de1（2026-04-04）；Architecture、Indexing and logging及Note。原始资料、Wiki、schema三层；具体目录按领域决定。</p></li><li id="ref-25"><span class="local-reference">llm-wiki-compiler · index.md生成实现（本地材料，未随网页发布）</span><p>固定本地版本5dc9102；buildIndexContent：Concepts链接和摘要、可选分类、页数与时间。</p></li><li id="ref-26"><span class="local-reference">本地主题页 · 腾讯营销服务业务（本地材料，未随网页发布）</span><p>实际产物，三份来源共同贡献；此处仅作为页面结构与来源组织实例。</p></li><li id="ref-27"><span class="local-reference">llm-wiki-compiler · 页面frontmatter实现（本地材料，未随网页发布）</span><p>buildMergedFrontmatter及utils/types.ts定义标题、摘要、来源、类型和时间等字段。</p></li><li id="ref-28"><span class="local-reference">llmwiki viewer · 本地展示（本地材料，未随网页发布）</span><p>本轮只读访问首页、/api/pages、/api/index；链接仅在本地服务启动时可访问，未修改服务或Wiki内容。</p></li><li id="ref-29"><span class="local-reference">llm-wiki-compiler · 查询保存与审核（本地材料，未随网页发布）</span><p>固定版本5dc9102；已核对query-save.ts、query-document.ts、query-publication.ts。保存查询页、刷新目录/embedding，以及review与profile限制。</p></li><li id="ref-30"><span class="local-reference">llm-wiki-compiler · 过期知识刷新（本地材料，未随网页发布）</span><p>refresh --stale识别受影响范围并调用编译流程；与query保存回答的路径分开。</p></li><li id="ref-31"><a href="https://arxiv.org/abs/2404.16130" target="_blank" rel="noopener noreferrer">Edge et al. · From Local to Global: A Graph RAG Approach to Query-Focused Summarization</a><p>GraphRAG论文；提出用知识图和社区摘要支持针对整个语料的全局问题。</p></li></ol><p class="note">本地资料链接依赖当前工作区目录；报告正文与样式离线可读；可选viewer嵌入依赖本地服务，外部参考资料需联网访问。本文未将网页宣传数据、未运行的实验或未经核实的候选方法当成本地成果。</p></section><footer class="footer"><span>Agent Wiki 调研 · 本地报告 v0.1</span><span>生成完成 ≠ 语义已验证 ≠ 检索收益已证实</span></footer></main><button id="focus-button" type="button" aria-pressed="false">专注阅读</button><script>
+const links = [...document.querySelectorAll('nav a')];
+const progress = document.querySelector('#progress');
+const sections = [...document.querySelectorAll('main section[id]')];
+let queued = false;
+function updateReading(){
+ const max=document.documentElement.scrollHeight-window.innerHeight;
+ progress.style.width=(max>0?Math.min(100,window.scrollY/max*100):0)+'%';
+ let current=sections[0];
+ for(const section of sections){if(section.getBoundingClientRect().top<180)current=section;}
+ for(const link of links){const active=link.hash==='#'+current.id;link.classList.toggle('active',active);if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');}
+ queued=false;
+}
+window.addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(updateReading);}}, {passive:true});
+window.addEventListener('resize',updateReading);updateReading();
+document.querySelector('#print-button').addEventListener('click',()=>window.print());
+const focusButton=document.querySelector('#focus-button');
+focusButton.addEventListener('click',()=>{const focused=document.body.classList.toggle('focus');focusButton.textContent=focused?'显示目录':'专注阅读';focusButton.setAttribute('aria-pressed',String(focused));updateReading();});
+let opened=[];
+window.addEventListener('beforeprint',()=>{opened=[...document.querySelectorAll('details')].map(el=>[el,el.open]);opened.forEach(([el])=>el.open=true);});
+window.addEventListener('afterprint',()=>opened.forEach(([el,state])=>el.open=state));
+</script></body></html>
