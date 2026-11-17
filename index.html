@@ -147,6 +147,7 @@ tags: [German nobility, House of Ascania]
 <div class="closing"><p>先由人定义页面schema，再由编译过程依据语料生成页面、组织分类并建立链接。知识可以按主题分类，也可以统一放置；字段格式、关联方式与来源引用须遵循预先确定的约定。</p></div></section>
 <section id="construction" class="section"><div class="section-heading"><span class="section-number">04</span><div><h2>Wiki 生成方法</h2><p>先看如何从空库生成第一批页面，再看不同系统怎样组织来源、主题与后续更新。</p></div></div>
 <p>为了从头理解 Wiki 构建，先从本地 <code>llm-wiki-compiler</code> 看完整过程：准备来源和页面规则，编译成页面，再补齐链接与索引。之后对照 SearchWiki 如何利用文档目录联合生成摘要和主题，以及 LLM-Wiki 如何在持续导入时用错误反馈改进 Wiki。</p>
+<p>总体来看，这些生成方法可以根据内容判断哪些知识值得拆成页面、页面之间如何关联，但不会从零自动发明一套分类体系并写成 <code>schema.md</code>。分类边界主要来自项目模板或用户已有的 <code>schema.md</code>；没有自定义 schema 时，提示词会引导模型使用实体、概念、来源等常见类型。<span class="citations"><a href="#ref-8" aria-label="参考文献8">[8]</a><a href="#ref-9" aria-label="参考文献9">[9]</a><a href="#ref-23" aria-label="参考文献23">[23]</a><a href="#ref-24" aria-label="参考文献24">[24]</a><a href="#ref-27" aria-label="参考文献27">[27]</a></span></p>
 
 <h3>4.1 llm-wiki-compiler：从空库开始，抽取概念并生成页面</h3>
 <p>首次运行时，来源目录中的文件都视为待处理来源。系统不要求来源先有统一的 PDF 目录结构；解析方式由项目提供。模型先从每份来源中抽取概念候选，程序把不同来源指向同一概念的候选合并，再让模型按页面规则生成概念页。收尾阶段生成 schema 规定的 seed pages、解析页面间链接并生成索引。之后再次运行时，系统只重做新增、变更或受影响的来源和页面。</p>
