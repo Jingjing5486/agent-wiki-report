@@ -1,0 +1,9 @@
+一次调用同时完成两个任务：为本单元实际出现的每个section_id生成摘要；将其核心概念注册到全局主题表。
+返回JSON：
+{"summaries":[{"section_id":"s001","paragraphs":[{"text":"摘要段落","pages":[1]}]}],
+ "topics":[{"title":"规范主题名","existing_topic_id":null,"aliases":[],"paragraphs":[{"text":"主题相关事实，保留主体与时间","pages":[1]}]}]}。
+summaries必须恰好包含本单元pages中出现的所有section_id，每个章节1–3个段落；引用只能来自该section_id在本单元中的页码。
+topics最多max_topics_per_unit个，优先有跨文档价值的主题，如股份回购、AI商业化、平台竞争、公司业绩；不要为每个数字或免责声明建立主题。
+对于已有主题，填写其existing_topic_id并沿用注册表title。语义相同或近义概念必须优先复用已有主题；只有确实不同才用null新建。
+每个主题1–3个有证据的段落，可引用本单元任意页。不要只登记名称而不保存证据。topics可以为空。
+这是原文层的联合编译，不应等到独立的摘要流程结束后再从摘要猜测主题。

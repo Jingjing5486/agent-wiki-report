@@ -1,1 +1,1 @@
-Static publication copy for agent-wiki-report.html. Local file references and the localhost Wiki viewer are intentionally omitted; external research links remain. Original source file was not modified.
+Static publication copy for agent-wiki-report.html. The code/ folder contains project source code and selected reference demo code. Local file references, runtime artifacts, prepared corpora, credentials, and the localhost Wiki viewer are intentionally omitted. Original source files were not modified.

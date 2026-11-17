@@ -1,0 +1,10 @@
+# Official API identifier checked on 2026-11-11. No credentials in this file.
+model = "deepseek-v4-pro"
+base_url = "https://api.deepseek.com"
+thinking = "disabled"
+temperature = 0.0
+max_tokens = 8192
+timeout_seconds = 180
+# Demo budget guard, characters including instructions and evidence; not a tokenizer.
+# Oversized inputs fail explicitly. No silent truncation or automatic batching.
+max_input_chars = 60000

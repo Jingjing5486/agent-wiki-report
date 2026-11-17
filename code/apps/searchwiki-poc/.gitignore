@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+artifacts/
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/

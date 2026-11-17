@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "searchwiki-poc"
+version = "0.1.0"
+description = "Page JSON to document, topic and source Wiki"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+api = ["certifi>=2024.2.2"]
+
+[project.scripts]
+searchwiki = "searchwiki.cli:main"
+
+[tool.setuptools.package-data]
+searchwiki = ["prompts/*.md"]
+
+[tool.setuptools.packages.find]
+include = ["searchwiki*"]

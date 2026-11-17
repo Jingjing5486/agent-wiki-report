@@ -1,0 +1,11 @@
+model = "deepseek-v4-pro"
+base_url = "https://api.deepseek.com"
+thinking = "disabled"
+temperature = 0.0
+max_tokens = 12000
+timeout_seconds = 180
+max_input_chars = 160000
+unit_max_chars = 48000
+unit_max_pages = 32
+max_topics_per_unit = 4
+repair_attempts = 1
