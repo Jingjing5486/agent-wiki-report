@@ -330,6 +330,28 @@ export class OpenAIProvider implements LLMProvider {
     return normalizeEmbeddingData(response.data, texts.length);
   }
 
+  /**
+   * Describe an image through the OpenAI-compatible vision endpoint. The image
+   * is sent as a base64 data URL alongside the prompt, so any OpenAI-compatible
+   * vision model (qwen-vl, glm-4v, minimax-vl, doubao-vision, ...) can read it.
+   */
+  async describeImage(mimeType: string, base64Data: string, prompt: string): Promise<string> {
+    const response = await this.client.chat.completions.create({
+      model: this.model,
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: prompt },
+            { type: "image_url", image_url: { url: `data:${mimeType};base64,${base64Data}` } },
+          ],
+        },
+      ],
+    });
+    recordUsage(() => ({ provider: "openai", model: response.model || this.model, requestId: response._request_id, responseId: response.id, operation: "describeImage", usage: openaiUsage(response.usage) }));
+    return response.choices[0]?.message?.content ?? "";
+  }
+
   /** Default embedding model for this provider. Subclasses may override. */
   protected embeddingModel(): string {
     return this.configuredEmbeddingModel ?? EMBEDDING_MODELS.openai;

@@ -32,7 +32,7 @@ interface UsageReceipt {
   model: string;
   requestId?: string | null;
   responseId?: string;
-  operation: "complete" | "stream" | "toolCall" | "embed" | "embedBatch";
+  operation: "complete" | "stream" | "toolCall" | "embed" | "embedBatch" | "describeImage";
   usage: ObservedUsage | null;
   usageComplete?: boolean;
 }

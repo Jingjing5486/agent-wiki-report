@@ -70,6 +70,12 @@ export interface LLMProvider {
   embed(text: string, inputType?: EmbeddingInputType): Promise<number[]>;
   /** Embed multiple texts in a single provider-native request (optional). */
   embedBatch?(texts: string[], inputType?: EmbeddingInputType): Promise<number[][]>;
+  /**
+   * Describe an image through the provider's vision endpoint. Optional:
+   * providers without image support omit it, and image ingest throws when it
+   * is absent.
+   */
+  describeImage?(mimeType: string, base64Data: string, prompt: string): Promise<string>;
 }
 
 /**
