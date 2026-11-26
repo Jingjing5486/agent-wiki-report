@@ -30,6 +30,7 @@ import { verbose } from "../utils/output.js";
 import ingestWeb from "../ingest/web.js";
 import ingestFile from "../ingest/file.js";
 import ingestPdf from "../ingest/pdf.js";
+import ingestPdfPrecise from "../ingest/precise-pdf.js";
 import ingestImage from "../ingest/image.js";
 import ingestTranscript, { isYoutubeUrl } from "../ingest/transcript.js";
 import type { IngestResult, SourceType } from "../utils/types.js";
@@ -353,17 +354,25 @@ export function journalSavedPath(savedPath: string, pathApi = path): string {
  * @param source - A URL (http/https), YouTube URL, local file, PDF, or image path.
  * @returns Saved filename, character count, truncation flag, source URI, and detected source type.
  */
-export async function ingestSource(root: string, source: string): Promise<IngestResult> {
-  return ingestSourceWith(localIngestSteps(root), source);
+/** Optional flags controlling how a source is ingested. */
+export interface IngestOptions {
+  /** Run the precise PDF pipeline (text + image + screenshot) instead of the rough getText-only path. */
+  precise?: boolean;
+}
+
+export async function ingestSource(root: string, source: string, options?: IngestOptions): Promise<IngestResult> {
+  return ingestSourceWith(localIngestSteps(root), source, options);
 }
 
 /** {@link ingestSource} over {@link IngestProjectSteps}: THE ONE BODY. Detect, fetch, limit, document, then save and journal. */
-export async function ingestSourceWith(steps: IngestProjectSteps, source: string): Promise<IngestResult> {
+export async function ingestSourceWith(steps: IngestProjectSteps, source: string, options?: IngestOptions): Promise<IngestResult> {
   const sourceType = await detectSourceType(source);
   output.status("*", output.info(`Ingesting [${sourceType}]: ${source}`));
   verbose(`source type: ${sourceType}`);
 
-  const { title, content } = await fetchContent(source, sourceType);
+  const { title, content } = options?.precise && sourceType === "pdf"
+    ? await ingestPdfPrecise(source)
+    : await fetchContent(source, sourceType);
   verbose(`fetched: ${content.length} chars`);
 
   const result = enforceCharLimit(content);
@@ -412,9 +421,9 @@ export async function ingestTextSourceWith(steps: IngestProjectSteps, input: Ing
  * Ingest a source and save it to the sources/ directory.
  * @param source - A URL (http/https), YouTube URL, local file, PDF, or image path.
  */
-export default async function ingest(source: string): Promise<void> {
+export default async function ingest(source: string, options?: IngestOptions): Promise<void> {
   const cwd = process.cwd();
-  const result = await ingestSource(cwd, source);
+  const result = await ingestSource(cwd, source, options);
   const savedPath = path.join(cwd, SOURCES_DIR, result.filename);
 
   output.status(

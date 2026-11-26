@@ -86,30 +86,23 @@ async function describeImageWithVision(
 }
 
 /**
- * Ingest a local image file using LLM vision for OCR and description.
+ * Route a base64 image through the active provider's vision endpoint and return
+ * the OCR-plus-description text. Shared by single-image ingest and precise PDF
+ * ingest, so both use the same provider routing (Anthropic SDK or an
+ * OpenAI-compatible vision endpoint).
  *
- * Routes to Anthropic vision for the anthropic provider, and to the provider
- * abstraction's describeImage for OpenAI-compatible providers (openai, minimax,
- * atlascloud, ...). Throws when the active provider has no image support.
- *
- * @param filePath - Absolute or relative path to an image file.
- * @returns An object with a title derived from the filename and the extracted content.
- * @throws When the provider does not support vision or on read/API failure.
+ * @param base64 - Image bytes encoded as base64 (no data-URL prefix).
+ * @param mimeType - Image MIME type (e.g. "image/png").
+ * @returns The vision model's OCR + description as markdown.
+ * @throws When the active provider has no image support.
  */
-export default async function ingestImage(filePath: string): Promise<IngestedSource> {
-  const ext = path.extname(filePath).toLowerCase();
-  const mimeType = mimeTypeForExtension(ext);
-  const imageBuffer = await readFile(filePath);
-  const imageData = imageBuffer.toString("base64");
-  const title = titleFromFilename(filePath);
-
+export async function describeImageContent(base64: string, mimeType: string): Promise<string> {
   const providerName = normalizeProviderName(process.env.LLMWIKI_PROVIDER ?? DEFAULT_PROVIDER);
 
   if (providerName === "anthropic") {
     const client = buildClient();
     const model = resolveAnthropicModelFromEnv() ?? PROVIDER_MODELS.anthropic;
-    const content = await describeImageWithVision(client, model, imageData, mimeType);
-    return { title, content };
+    return describeImageWithVision(client, model, base64, mimeType as AnthropicImageMediaType);
   }
 
   const provider = buildProvider(providerName);
@@ -120,6 +113,22 @@ export default async function ingestImage(filePath: string): Promise<IngestedSou
         `Use an OpenAI-compatible vision provider (e.g. LLMWIKI_PROVIDER=openai with LLMWIKI_MODEL=qwen-vl-max) or anthropic.`,
     );
   }
-  const content = await provider.describeImage(mimeType, imageData, VISION_PROMPT);
+  return provider.describeImage(mimeType, base64, VISION_PROMPT);
+}
+
+/**
+ * Ingest a local image file using LLM vision for OCR and description.
+ *
+ * @param filePath - Absolute or relative path to an image file.
+ * @returns An object with a title derived from the filename and the extracted content.
+ */
+export default async function ingestImage(filePath: string): Promise<IngestedSource> {
+  const ext = path.extname(filePath).toLowerCase();
+  const mimeType = mimeTypeForExtension(ext);
+  const imageBuffer = await readFile(filePath);
+  const imageData = imageBuffer.toString("base64");
+  const title = titleFromFilename(filePath);
+
+  const content = await describeImageContent(imageData, mimeType);
   return { title, content };
 }

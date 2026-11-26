@@ -74,11 +74,12 @@ program
 program
   .command("ingest <source>")
   .description("Ingest a URL or local file into sources/")
+  .option("--precise", "Run the precise PDF pipeline: text + image + screenshot extraction with vision OCR, then merge")
   .option("--verbose", "Print detailed progress (or set LLMWIKI_VERBOSE=1)")
-  .action(async (source: string, options: { verbose?: boolean }) => {
+  .action(async (source: string, options: { precise?: boolean; verbose?: boolean }) => {
     try {
       setVerbose(verboseEnabled(options.verbose));
-      await ingestCommand(source);
+      await ingestCommand(source, { precise: options.precise });
     } catch (err) {
       console.error(`\x1b[31mError:\x1b[0m ${err instanceof Error ? err.message : err}`);
       process.exit(1);
