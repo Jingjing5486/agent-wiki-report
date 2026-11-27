@@ -11,7 +11,7 @@ import type {
   ProvenanceState,
 } from "../utils/types.js";
 import type { PageKindRule, SeedPage } from "../schema/index.js";
-import { languageDirective } from "../utils/output-language.js";
+import { getOutputLanguage, languageDirective } from "../utils/output-language.js";
 import { activeSystemPolicy, noPagesLimitEnabled } from "./prompt-modifiers.js";
 import { sourcesSectionEnabled } from "../utils/sources-section.js";
 import { plainConceptTitle } from "./concept-title.js";
@@ -47,7 +47,7 @@ function sourcesSectionLines(): string[] {
  * downstream auditor can distinguish pages produced under different prompt
  * generations even when the model id is identical. Format is `vMAJOR`.
  */
-export const PROMPT_VERSION = "v7";
+export const PROMPT_VERSION = "v8";
 
 /**
  * The caller's system policy as prompt lines, or nothing when none is set.
@@ -69,14 +69,22 @@ export const PROMPT_VERSION = "v7";
  * through extraction, page rendering, the review pipeline and seed pages, none
  * of which otherwise need to know it exists.
  */
-function systemPolicyLines(): string[] {
+function systemPolicyLines(
+  heading = "Additional system policy (follow in addition to every built-in instruction above):",
+): string[] {
   const policy = activeSystemPolicy();
   if (!policy) return [];
   return [
     "",
-    "Additional system policy (follow in addition to every built-in instruction above):",
+    heading,
     policy,
   ];
+}
+
+/** Add the output-language choice to the Chinese extraction prompt, when set. */
+function withExtractionLangLine(...lines: string[]): string[] {
+  const lang = getOutputLanguage();
+  return lang ? [...lines, `请使用 ${lang} 输出。`] : lines;
 }
 
 /** Allowed provenance state strings emitted by the LLM tool schema. */
@@ -93,7 +101,7 @@ const PROVENANCE_STATE_VALUES: ProvenanceState[] = [
  */
 export const CONCEPT_EXTRACTION_TOOL = {
   name: "extract_concepts",
-  description: "Extract knowledge concepts from a source document",
+  description: "从来源文档中抽取知识主题",
   input_schema: {
     type: "object" as const,
     properties: {
@@ -104,44 +112,41 @@ export const CONCEPT_EXTRACTION_TOOL = {
           properties: {
             concept: {
               type: "string",
-              description: "Human-readable concept title",
+              description: "适合人类阅读的主题名称",
             },
             summary: {
               type: "string",
-              description: "One-line description",
+              description: "用一句话概括主题",
             },
             is_new: {
               type: "boolean",
-              description: "True if this is a new concept not in existing wiki",
+              description: "如果该主题尚未收录在现有 Wiki 中，则为 true",
             },
             tags: {
               type: "array",
               items: { type: "string" },
-              description:
-                "2-4 categorical tags for organizing this concept (e.g., 'machine-learning', 'optimization')",
+              description: "用于归类主题的 2–4 个标签，例如 machine-learning、optimization",
             },
             confidence: {
               type: "number",
-              description:
-                "Confidence in this concept on a 0..1 scale (1 = directly stated, 0 = highly speculative).",
+              description: "来源支持该主题的可信度，范围为 0 到 1；1 表示来源直接陈述，0 表示高度推测",
             },
             provenance_state: {
               type: "string",
               enum: PROVENANCE_STATE_VALUES,
-              description:
-                "How this concept was produced: 'extracted' (direct from source), 'merged' (synthesised across sources), 'inferred' (model deduction), or 'ambiguous' (sources disagree).",
+              description: "主题的来源属性：extracted 表示来源直接陈述；merged 表示综合多个来源；inferred 表示依据上下文推断；ambiguous 表示来源之间存在分歧",
             },
             contradicted_by: {
               type: "array",
               items: {
                 type: "object",
                 properties: {
-                  slug: { type: "string", description: "Slug of the contradicting concept." },
-                  reason: { type: "string", description: "Brief reason for the contradiction." },
+                  slug: { type: "string", description: "证据与本主题相冲突的其他主题标识" },
+                  reason: { type: "string", description: "简要说明冲突原因" },
                 },
                 required: ["slug"],
               },
-              description: "Slugs of other concepts whose evidence contradicts this one.",
+              description: "证据与本主题相冲突的其他主题标识",
             },
           },
           required: ["concept", "summary", "is_new"],
@@ -164,26 +169,23 @@ export function buildExtractionPrompt(
   existingIndex: string,
 ): string {
   const indexSection = existingIndex
-    ? `\n\nHere is the existing wiki index — avoid duplicating concepts already covered:\n\n${existingIndex}`
-    : "\n\nNo existing wiki pages yet.";
+    ? `\n\n以下是现有 Wiki 索引。请避免重复已有页面已经覆盖的主题：\n\n${existingIndex}`
+    : "\n\n当前 Wiki 还没有页面。";
 
   return [
-    ...withLangLine(
-      "You are a knowledge extraction engine. Analyze the following source document",
+    ...withExtractionLangLine(
+      "你是一名知识抽取引擎。请分析以下来源文档，找出其中有材料支持、彼此独立且有意义的主题。",
       ...conceptScopeLines(),
-      "Focus on key ideas, techniques, patterns, or entities — not trivial details.",
-      "Use the extract_concepts tool to return your findings.",
+      "重点关注关键观点、技术、模式或实体，略去琐碎细节。",
+      "请使用 extract_concepts 工具返回结果。",
     ),
     "",
-    "For every concept, emit provenance metadata so downstream tools can reason",
-    "about reliability:",
-    "  - confidence: 0..1 — how certain you are the source supports this concept.",
-    "  - provenance_state: 'extracted' if directly stated, 'merged' if synthesised",
-    "    from multiple parts of the source, 'inferred' if reasoned from context,",
-    "    or 'ambiguous' if the source is contradictory or unclear.",
-    "  - contradicted_by: slugs of other concepts (in this batch or the index)",
-    "    whose evidence conflicts with this one.",
-    ...systemPolicyLines(),
+    "请为每个主题提供以下来源属性元数据，供后续步骤判断可靠性：",
+    "  - confidence：取值 0 到 1，表示你有多确信来源支持该主题。",
+    "  - provenance_state：来源直接陈述时填 extracted；综合来源中的多个部分时填 merged；",
+    "    根据上下文推断时填 inferred；来源含糊或自相矛盾时填 ambiguous。",
+    "  - contradicted_by：列出本批次或现有索引中，证据与该主题相冲突的其他主题标识。",
+    ...systemPolicyLines("附加指令（请在遵守以上所有内置规则的基础上，一并遵守以下要求）："),
     indexSection,
     "\n\n--- SOURCE DOCUMENT ---\n\n",
     sourceContent,
@@ -214,14 +216,14 @@ const PAGE_ATTRIBUTION_LINES: readonly string[] = [
 /** Keep the legacy extraction request unless the caller explicitly removes the quota. */
 function conceptScopeLines(): string[] {
   return noPagesLimitEnabled() ? [
-    "and identify distinct, meaningful concepts supported by this document.",
-    "There is no minimum or target number of concepts. Return an empty concepts array when none are supported.",
-    "Each concept should be a standalone topic that the source can describe without adding outside knowledge.",
-    "A passing mention supports only the stated relationship, not an expanded article about the named topic.",
-    "Keep summaries limited to source-supported facts; do not invent details to fill pages.",
+    "请识别由本文档支持的、彼此独立且有意义的主题。",
+    "主题数量没有下限，也没有目标数量。如果文档不足以支持任何主题，请返回空的 concepts 数组。",
+    "每个主题都应能仅凭这份来源独立说明，不要补充外部知识。",
+    "如果来源只是顺带提到某个对象，只能记录文中明确陈述的关系，不要围绕它扩写整篇文章。",
+    "一句话说明只写来源支持的事实，不要为了凑成页面而编造细节。",
   ] : [
-    "and identify 3-8 distinct, meaningful concepts worth documenting as wiki pages.",
-    "Each concept should be a standalone topic that someone might look up.",
+    "请识别 3–8 个值得记录为 Wiki 页面、彼此独立且有意义的主题。",
+    "每个主题都应是读者可能会主动查询的独立主题。",
   ];
 }
 

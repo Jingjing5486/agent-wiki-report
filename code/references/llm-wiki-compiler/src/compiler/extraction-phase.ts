@@ -165,7 +165,7 @@ async function extractConcepts(
   const system = buildExtractionPrompt(sourceContent, existingIndex);
   const rawOutput = await callClaude({
     system,
-    messages: [{ role: "user", content: "Extract the key concepts from this source." }],
+    messages: [{ role: "user", content: "请从这份来源文档中抽取关键主题。" }],
     tools: [CONCEPT_EXTRACTION_TOOL],
   });
 

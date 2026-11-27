@@ -16,7 +16,7 @@ afterEach(() => vi.unstubAllEnvs());
 describe("no-pages-limit selection", () => {
   it.each([undefined, false])("preserves the legacy guidance when the option is %s", enabled => {
     withRunNoPagesLimit(enabled, () => {
-      expect(buildExtractionPrompt("source", "")).toContain("identify 3-8 distinct, meaningful concepts");
+      expect(buildExtractionPrompt("source", "")).toContain("请识别 3–8 个值得记录为 Wiki 页面、彼此独立且有意义的主题。");
       expect(buildPagePrompt("Topic", "source", "", "")).toContain("If a paragraph is your inference");
       expect(activePromptModifiers()).toEqual({});
     });
