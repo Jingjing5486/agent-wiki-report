@@ -45,7 +45,7 @@ function mimeTypeForExtension(ext: string): AnthropicImageMediaType {
 
 /** Shared prompt for vision OCR + description, used by both provider paths. */
 const VISION_PROMPT =
-  "Extract and transcribe all text visible in this image. Then provide a detailed description of any non-text visual content. Format your response as markdown.";
+  "提取并转录这张图片中所有可见的文字。然后详细描述图片中的非文字视觉内容。请使用 Markdown 格式输出，并用中文回答。";
 
 /** Build an Anthropic client from the current environment config. */
 function buildClient(): Anthropic {
